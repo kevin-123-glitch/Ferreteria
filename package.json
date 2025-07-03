@@ -1,5 +1,5 @@
 {
-  "name": "Ferreteria",
+  "name": "ferreteria",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
@@ -16,10 +16,11 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "exceljs": "^4.4.0",
-    "express": "^4.19.2",
+    "express": "^4.21.2",
     "express-mysql-session": "^3.0.3",
     "express-session": "^1.18.0",
     "multer": "^1.4.5-lts.1",
+    "mysql": "^2.18.1",
     "mysql2": "^3.11.0",
     "node-cron": "^3.0.3",
     "node-fetch": "^3.3.2",
@@ -27,5 +28,13 @@
     "xlsx": "^0.18.5",
     "xlsx-style": "^0.8.13",
     "xmlbuilder": "^15.1.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevin-123-glitch/Ferreteria.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kevin-123-glitch/Ferreteria/issues"
+  },
+  "homepage": "https://github.com/kevin-123-glitch/Ferreteria#readme"
 }
