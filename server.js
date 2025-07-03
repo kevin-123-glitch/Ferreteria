@@ -22,9 +22,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Ruta principal
+// Ruta raíz
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/html/loguin.html'));
+});
+
+app.get('/menu.html', (req, res) => {
+  res.redirect('/html/menu.html');
 });
 // Configuración del middleware de sesiones
 app.use(session({
