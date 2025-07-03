@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas de Productos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> <!-- Usa la versión completa de jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script> <!-- Incluir CanvasJS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="../css/tablero.css"> <!-- Enlaza el archivo CSS global -->
+</head>
+<style>
+    
+
+
+    /* Tarjetas */
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 0.25rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+
+    /* Header de ventas */
+    .card-header-ventas {
+        background-color: #007bff;
+        color: #fff;
+        font-size: 1rem;
+        /* Tamaño de fuente para ventas */
+        font-weight: 100;
+        /* Peso de fuente ajustado para ventas */
+        border-bottom: 1px solid #ddd;
+        padding: 7px 10px 1px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Header de compras */
+    .card-header-compras {
+        background-color: #ffc107;
+        /* Color de fondo diferente para compras */
+        color: #000;
+        font-size: 1rem;
+        /* Tamaño de fuente para compras */
+        font-weight: 100;
+        /* Peso de fuente ajustado para compras */
+        border-bottom: 1px solid #ddd;
+        padding: 7px 10px 1px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Header de compras */
+    .card-header-top {
+        background-color: #27bc90;
+        /* Color de fondo diferente para compras */
+        color: #f8f8f8;
+        font-size: 1rem;
+        /* Tamaño de fuente para compras */
+        font-weight: 100;
+        /* Peso de fuente ajustado para compras */
+        border-bottom: 1px solid #ddd;
+        padding: 7px 10px 1px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Tamaño específico para el título del encabezado de ventas del mes */
+    #title-header {
+        font-size: 1rem;
+        /* Tamaño de fuente ajustado */
+        font-weight: 400;
+        /* Peso de fuente ajustado para ventas */
+
+    }
+
+    /* Tamaño específico para el título del encabezado de compras del mes */
+    #title-header-compras {
+        font-size: 1rem;
+        /* Tamaño de fuente ajustado */
+        font-weight: 500;
+        /* Peso de fuente ajustado para ventas */
+
+    }
+
+    /* Tamaño específico para el título del encabezado de compras del mes */
+    #title-header-top {
+        font-size: 1rem;
+        /* Tamaño de fuente ajustado */
+        font-weight: 500;
+        /* Peso de fuente ajustado para ventas */
+
+    }
+
+    /* Botones en tarjetas */
+    .card-tools .btn-tool {
+        color: #fff;
+        font-size: 1.1rem;
+        /* Tamaño de fuente ajustado */
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+
+    /* Cuerpo de tarjetas */
+    .card-body {
+        padding: 10px;
+        /* Reduce el padding del cuerpo de la tarjeta */
+        background-color: #f8f9fa;
+    }
+
+    /* Gráficos */
+    .chart {
+        position: relative;
+        height: 250px;
+        /* Ajuste la altura del gráfico */
+    }
+
+    /* Responsividad */
+    @media (max-width: 768px) {
+        .chart {
+            height: 250px;
+            /* Ajuste la altura del gráfico en pantallas más pequeñas */
+        }
+    }
+</style>
+
+<body>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- TARJETA CANTIDAD DE PRODUCTOS REGISTRADOS -->
+                <div class="col-lg-3">
+                    <!-- small box -->
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h4 id="totalProductosMinStock">5</h4>
+                            <p>Cantidad de productos</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TARJETA INGRESOS DEL DIA -->
+                <div class="col-lg-3">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h4 id="IngresoDiario">S/ 34</h4>
+                            <p>Ingresos del Día</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- TARJETA EGRESOS DEL DIA -->
+                <div class="col-lg-3">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h4 id="EgresoDiario">S/ 707.00</h4>
+                            <p>Egresos del Día</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- TARJETA TOTAL GANANCIAS DIARIA -->
+                <div class="col-lg-3">
+                    <!-- small box -->
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h4 id="GananciaDiaria">S/ 26,617.00</h4>
+                            <p>Ganancia Neta del Día</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+
+                    </div>
+                </div>
+            </div> <!-- ./row Tarjetas Informativas -->
+
+            <div class="row">
+                <!-- Compras del mes -->
+                <div class="col-lg-6" style=" margin-bottom:20px;">
+                    <div class="card card-info shadow">
+                        <div class="card-header card-header-compras">
+                            <h3 class="card-title-compras" id="title-header-compras">VENTAS DEL MES:</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                    id="toggleButtonCompras">
+                                    <i class="fas fa-minus" id="toggleIconCompras"></i>
+                                </button>
+                            </div> <!-- ./ end card-tools -->
+                        </div> <!-- ./ end card-header -->
+                        <div class="card-body">
+                            <div class="chart" id="barChartContainerCompras">
+                                <!-- El contenedor para CanvasJS -->
+                            </div>
+                        </div> <!-- ./ end card-body -->
+                    </div>
+                </div>
+
+
+                <!-- Ventas del mes -->
+                <div class="col-lg-6" style=" margin-bottom:20px;">
+                    <div class="card card-info shadow">
+                        <div class="card-header card-header-ventas">
+                            <h3 class="card-title" id="title-header">VENTAS DEL MES:</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                    id="toggleButtonVentas">
+                                    <i class="fas fa-minus" id="toggleIconVentas"></i>
+                                </button>
+                            </div> <!-- ./ end card-tools -->
+                        </div> <!-- ./ end card-header -->
+                        <div class="card-body ">
+                            <div class="chart" id="barChartContainerVentas">
+                                <!-- El contenedor para CanvasJS -->
+                            </div>
+                        </div> <!-- ./ end card-body -->
+                    </div>
+                </div>
+
+                  <!-- productos mas vendidos durante el mes mes -->
+                  <div class="col-lg-12" style=" margin-bottom:20px;">
+                    <div class="card card-info shadow">
+                        <div class="card-header card-header-top">
+                            <h3 class="card-title-top" id="title-header-top">TOP PRODUCTOS MAS VENDIDOS</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                id="toggleButtonTop">
+                                <i class="fas fa-minus" id="toggleIconTop"></i>
+                            </button>
+                            </div> <!-- ./ end card-tools -->
+                        </div> <!-- ./ end card-header -->
+                        <div class="card-body">
+                            <div class="chart" id="barChartContainerTop">
+                                <!-- El contenedor para CanvasJS -->
+                            </div>
+                        </div> <!-- ./ end card-body -->
+                    </div>
+                </div>
+
+
+            </div>
+        </div><!-- /.container-fluid -->
+    </div>
+
+    <script src="/config/api.js"></script>
+    <script>
+        // api.js
+        $(document).ready(function () {
+
+            cargarGraficoBarrasCompra();
+            cargarGraficoBarrasVentas();
+            top10();
+            $('#toggleButtonCompras').on('click', toggleIconCompras);
+            $('#toggleButtonVentas').on('click', toggleIconVentas);
+            $('#toggleButtonTop').on('click', toggleIconTop);
+
+            CargarTarjetas();
+
+
+        });
+
+        function toggleIconCompras() {
+            const icon = $('#toggleIconCompras'); // Selecciona el ícono por su ID
+            const container = $('#barChartContainerCompras'); // Cambiado para referirse al contenedor correcto
+
+            // Alternar visibilidad del contenedor
+            if (container.is(':visible')) {
+                container.slideUp(300, function () {
+                    icon.removeClass('fa-minus').addClass('fa-plus'); // Cambiar a ícono "+"
+                });
+            } else {
+                container.slideDown(300, function () {
+                    icon.removeClass('fa-plus').addClass('fa-minus'); // Cambiar a ícono "-"
+                });
+            }
+        }
+
+        function toggleIconVentas() {
+            const icon = $('#toggleIconVentas'); // Selecciona el ícono por su ID
+            const container = $('#barChartContainerVentas'); // Cambiado para referirse al contenedor correcto
+
+            // Alternar visibilidad del contenedor
+            if (container.is(':visible')) {
+                container.slideUp(300, function () {
+                    icon.removeClass('fa-minus').addClass('fa-plus'); // Cambiar a ícono "+"
+                });
+            } else {
+                container.slideDown(300, function () {
+                    icon.removeClass('fa-plus').addClass('fa-minus'); // Cambiar a ícono "-"
+                });
+            }
+        }
+
+        function toggleIconTop() {
+            const icon = $('#toggleIconTop'); // Selecciona el ícono por su ID
+            const container = $('#barChartContainerTop'); // Cambiado para referirse al contenedor correcto
+
+            // Alternar visibilidad del contenedor
+            if (container.is(':visible')) {
+                container.slideUp(300, function () {
+                    icon.removeClass('fa-minus').addClass('fa-plus'); // Cambiar a ícono "+"
+                });
+            } else {
+                container.slideDown(300, function () {
+                    icon.removeClass('fa-plus').addClass('fa-minus'); // Cambiar a ícono "-"
+                });
+            }
+        }
+
+        function cargarGraficoBarrasCompra() {
+            fetch(`${apiBaseUrl}/tablero/egresoMes`) // Cambia esta URL al endpoint correcto
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(respuesta => {
+                    var meses = [];
+                    var totalVentas = [];
+                    var totalVentasMes = 0;
+                    var mesActual = ""; // Variable para el mes actual
+
+                    // Asegúrate de que los datos sean correctos
+                    console.log(respuesta);
+
+                    respuesta.forEach(function (item) {
+                        meses.push(item.mes);
+                        totalVentas.push(parseFloat(item.total_ventas)); // Asegúrate de convertir el valor a float
+                        totalVentasMes += parseFloat(item.total_ventas);
+                        // Suponiendo que el mes actual es el primero en la lista de datos
+                        if (!mesActual) {
+                            mesActual = item.mes;
+                        }
+                    });
+
+                    // Actualiza el título con el total de ventas del mes
+                    $("#title-header-compras").html('COMPRAS DEL MES : S/. ' + totalVentasMes.toFixed(2).toString().replace(/\d(?=(\d{3})+\.)/g, "$&,"));
+
+                    var barChart = new CanvasJS.Chart("barChartContainerCompras", {
+                        animationEnabled: true,
+                        theme: "light2", // Tema claro para el gráfico
+                        axisX: {
+                            title: "Meses",
+                            textAlign: "center"
+                        },
+                        axisY: {
+                            title: "Total Compras",
+                            includeZero: true
+                        },
+                        data: [{
+                            type: "column",
+                            name: "Total de Compras del mes",
+                            showInLegend: true,
+                            color: "#239650",
+                            dataPoints: meses.map((mes, index) => ({
+                                label: mes,
+                                y: totalVentas[index]
+                            }))
+                        }]
+                    });
+
+                    barChart.render();
+                })
+                .catch(error => {
+                    console.error('Error al cargar los datos de ventas:', error);
+                });
+        }
+
+        function cargarGraficoBarrasVentas() {
+            fetch(`${apiBaseUrl}/tablero/ingresoMes`) // Cambia esta URL al endpoint correcto
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(respuesta => {
+                    var meses = [];
+                    var totalVentas = [];
+                    var totalVentasMes = 0;
+                    var mesActual = ""; // Variable para el mes actual
+    
+                    // Asegúrate de que los datos sean correctos
+                    console.log(respuesta);
+    
+                    respuesta.forEach(function (item) {
+                        meses.push(item.mes);
+                        totalVentas.push(parseFloat(item.total_ventas)); // Asegúrate de convertir el valor a float
+                        totalVentasMes += parseFloat(item.total_ventas);
+                        // Suponiendo que el mes actual es el primero en la lista de datos
+                        if (!mesActual) {
+                            mesActual = item.mes;
+                        }
+                    });
+    
+                    // Actualiza el título con el total de ventas del mes
+                    $("#title-header").html('VENTAS DEL MES: S/. ' + totalVentasMes.toFixed(2).toString().replace(/\d(?=(\d{3})+\.)/g, "$&,"))
+    
+                    var barChart = new CanvasJS.Chart("barChartContainerVentas", {
+                        animationEnabled: true,
+                        theme: "light2", // Tema claro para el gráfico
+    
+                        axisX: {
+                            title: "Meses",
+                            textAlign: "center"
+                        },
+                        axisY: {
+                            title: "Total Ventas",
+                            includeZero: true
+                        },
+                        data: [{
+                            type: "column",
+                            name: "Total de ventas del mes",
+                            showInLegend: true,
+                            color: "#2396c0",
+    
+                            dataPoints: meses.map((mes, index) => ({
+                                label: mes,
+                                y: totalVentas[index]
+                            }))
+                        }]
+                    });
+    
+                    barChart.render();
+                })
+                .catch(error => {
+                    console.error('Error al cargar los datos de ventas:', error);
+                });
+        }
+    
+        function CargarTarjetas() {
+
+            const totalProductosMinStockElement = document.getElementById('totalProductosMinStock');
+            const ingresoDiarioElement = document.getElementById('IngresoDiario');
+            const egresoDiarioElement = document.getElementById('EgresoDiario');
+            const gananciaDiariaElement = document.getElementById('GananciaDiaria');
+
+            // Obtener productos con stock mínimo
+            fetch(`${apiBaseUrl}/tablero/stock`)
+                .then(response => response.json())
+                .then(data => {
+                    totalProductosMinStockElement.textContent = `${data.total_productos || '0'}`;
+                })
+                .catch(error => {
+                    totalProductosMinStockElement.textContent = 'Error al cargar datos';
+                    console.error('Error al obtener productos :', error);
+                });
+
+            // Obtener ingreso diario
+            fetch(`${apiBaseUrl}/tablero/ingreso`)
+                .then(response => response.json())
+                .then(data => {
+                    ingresoDiarioElement.textContent = `S/ ${data.total_ingreso_diario || '0'}`;
+                })
+                .catch(error => {
+                    ingresoDiarioElement.textContent = 'Error al cargar datos';
+                    console.error('Error al obtener ingresos diarios:', error);
+                });
+
+            // Obtener egreso diario
+            fetch(`${apiBaseUrl}/tablero/egreso`)
+                .then(response => response.json())
+                .then(data => {
+                    egresoDiarioElement.textContent = `S/ ${data.total_egreso_diario || '0'}`;
+                })
+                .catch(error => {
+                    egresoDiarioElement.textContent = 'Error al cargar datos';
+                    console.error('Error al obtener egresos diarios:', error);
+                });
+
+            // Obtener ganancia diaria
+            fetch(`${apiBaseUrl}/tablero/ganancia`)
+                .then(response => response.json())
+                .then(data => {
+                    gananciaDiariaElement.textContent = `S/ ${data.ganancia_diaria || '0'}`;
+                })
+                .catch(error => {
+                    gananciaDiariaElement.textContent = 'Error al cargar datos';
+                    console.error('Error al obtener ganancia diaria:', error);
+                });
+
+        }
+     
+        function top10() {
+
+            // Realizar una solicitud a la API para obtener los datos
+            fetch(`${apiBaseUrl}/tablero/productosTop`) // Ajusta la URL según la ruta de tu API
+                .then(response => response.json())
+                .then(data => {
+                    // Transformar los datos para el gráfico
+                    const chartData = data.map(product => ({
+                        label: product.Nombre, // Nombre del producto
+                        y: product.total_cantidad_vendida // Cantidad vendida
+                    }));
+    
+                    // Configurar el gráfico con CanvasJS
+                    const chart = new CanvasJS.Chart("barChartContainerTop", {
+                        animationEnabled: true,
+                        theme: "light2", // Opciones: "light1", "light2", "dark1", "dark2"
+    
+                        data: [{
+                            type: "pie", // Tipo de gráfico: circular
+                            startAngle: 25,
+                            toolTipContent: "<b>{label}</b>: {y}",
+                            showInLegend: true,
+                            legendText: "{label}",
+                            indexLabelFontSize: 16,
+                            indexLabel: "{label} - {y}",
+                            dataPoints: chartData // Datos a mostrar
+                        }]
+                    });
+    
+                    // Renderizar el gráfico
+                    chart.render();
+                })
+                .catch(error => {
+                    console.error('Error al cargar los datos:', error);
+                    // Mostrar un mensaje de error al usuario si es necesario
+                });
+        }
+    
+    
+
+
+    </script>
+</body>
+
+</html>

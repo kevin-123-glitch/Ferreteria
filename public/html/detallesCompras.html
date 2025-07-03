@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap5.min.css" />
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="../css/compra.css"> <!-- Enlaza el archivo CSS global -->
+    <link rel="stylesheet" href="../css/tablasCompras.css"> <!-- Enlaza el archivo CSS global -->
+    <link rel="stylesheet" href="../css/tablasComprasD.css"> <!-- Enlaza el archivo CSS global -->
+
+
+    <!-- Excel y PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.6.0/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-invoice-template@latest/dist/index.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<style>
+    .card-header {
+        background-color: white;
+        /* Set the background of the card header */
+        color: rgb(29, 29, 29);
+        /* Set the text color */
+        padding: 10px;
+        border-top: 2.5px solid #17a2b8;
+        /* Blue border at the top */
+        border-bottom: 1px solid gray;
+        /* Gray border at the bottom */
+        border-radius: 1px 5px 0 0;
+        /* Rounded corners only at the top */
+    }
+
+    .card-header2 {
+        background-color: white;
+        /* Set the background of the card header */
+        color: rgb(29, 29, 29);
+        /* Set the text color */
+        padding: 10px;
+        border-top: 2.5px solid #61bc61;
+        /* Blue border at the top */
+        border-bottom: 1px solid gray;
+        /* Gray border at the bottom */
+        border-radius: 1px 5px 0 0;
+        /* Rounded corners only at the top */
+    }
+
+    .card-title {
+        font-size: 15px;
+        /* Adjust font size */
+        margin: 0;
+        /* Remove default margin */
+        text-align: left;
+        /* Center the title */
+        font-family: 'Arial', sans-serif;
+        /* Optional: Change the font family */
+        margin-left: 15px;
+        /* Move the text slightly to the right */
+
+    }
+
+    .input-group {
+        background-color: #f0f0f0;
+        /* Color de fondo del grupo de entrada */
+        border-radius: 5px;
+        /* Bordes redondeados */
+    }
+</style>
+
+<body>
+
+    <div class="content-wrapper" style="margin-bottom: 15px;">
+        <div class="card-header">
+            <h3 class="card-title">Listado de Compras</h3>
+        </div>
+
+        <div class="custom-container">
+
+            <div class="header-container">
+
+                <div class="card-body">
+
+                    <div class="row align-items-end">
+                        <div class="col-md-2" style="margin-bottom: 10px;">
+                            <div class="form-group mb-0">
+                                <label for="text_fecha_I" class="d-flex align-items-center">
+                                    <span class="small">Fecha Inicio:</span>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                    </div>
+                                    <input type="date" class="form-control form-control-sm" id="fechaInicio">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2" style="margin-bottom: 10px;">
+                            <div class="form-group mb-0">
+                                <label for="text_fecha_F" class="d-flex align-items-center">
+                                    <span class="small">Fecha Fin:</span>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                    </div>
+                                    <input type="date" class="form-control form-control-sm" id="fechaFin">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 offset-md-6 d-flex justify-content-end align-items-end"
+                            style="height: 100%;">
+                            <a class="btn btn-primary btn-sm" style="width:100%;height:25 px; margin-bottom: 10px;"
+                                id="filtrarFechas">Buscar</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="divider">
+
+            <div class="table-responsive ">
+                <table id="diseñoTable">
+                    <thead>
+                        <tr>
+                            <th class="hide-computer">ID Compra</th>
+                            <th>Tipo de Documento</th>
+                            <th>Documento</th>
+                            <th class="hide-mobile">Proveedor</th>
+                            <th class="hide-mobile">Tipo de Pago</th>
+                            <th class="hide-mobile">Descuento</th>
+                            <th class="hide-mobile">Fecha</th>
+                            <th class="hide-mobile">SubTotal</th>
+                            <th class="hide-mobile">IGV</th>
+                            <th class="hide-mobile">Descuento</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Las filas se llenarán dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="card-header2">
+            <h3 class="card-title">Listado de Detalles de compras</h3>
+        </div>
+        <div class="custom-container">
+            <div class="header-container">
+                <div class="card-body">
+
+                </div>
+
+            </div>
+            <hr class="divider">
+            <div class="table-responsive ">
+                <table id="diseñoTable1">
+                    <thead>
+                        <tr>
+                            <th class="hide-computer">ID</th>
+                            <th>Codigo</th>
+                            <th>Producto</th>
+                            <th>Cant.</th>
+                            <th>Precio</th>
+                            <th>Importe</th>
+                            <th class="hide-mobile">Medida</th>
+                            <th class="hide-mobile">Marca</th>
+                            <th>Desc. %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Las filas se llenarán dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- jQuery (completa) y DataTables -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Bootstrap 5 JS (sin jQuery) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- DataTables Responsive JS -->
+    <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.0/js/responsive.bootstrap5.min.js"></script>
+    <script src="/config/api.js"></script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            document.getElementById('filtrarFechas').addEventListener('click', () => {
+                Compras();
+            });
+            cargar();
+            cargar2();
+
+        });
+
+        function cargar() {
+
+            // Obtener la fecha actual en UTC
+            const now = new Date();
+
+            // Ajustar la fecha a la zona horaria de Perú (GMT-5)
+            const peruOffset = -5; // GMT-5 en horas
+            const peruTime = new Date(now.setHours(now.getUTCHours() + peruOffset));
+
+            // Convertir la fecha ajustada al formato YYYY-MM-DD
+            const todayPeru = peruTime.toISOString().split('T')[0];
+
+            console.log(todayPeru); // Muestra la fecha actual en Perú
+
+            // Establecer la fecha en los campos de fecha
+            document.getElementById('fechaInicio').value = todayPeru;
+            document.getElementById('fechaFin').value = todayPeru;
+
+            var tableElement = $('#diseñoTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [5, 10, 15, 20, 100, 200, 500],
+                columnDefs: [
+                    {
+                        targets: [0, 3, 4, 5, 6, 7, 8, 9], // Índices de las columnas a ocultar en vistas móviles
+                        className: 'hide-mobile'
+                    },
+                    {
+                        targets: [0], // Índices de las columnas a ocultar en vistas de escritorio
+                        className: 'hide-computer'
+                    }
+                ],
+                language: {
+                    lengthMenu: "Mostrar _MENU_ registros por página",
+                    zeroRecords: "Ningún registro encontrado",
+                    info: "Mostrando de (_START_ a _END_) de un total de _TOTAL_ registros",
+                    infoEmpty: "Ningún registro encontrado",
+                    infoFiltered: "(filtrados desde _MAX_ registros totales)",
+                    loadingRecords: "Cargando...",
+                    paginate: {
+                        first: "Primero",
+                        last: "Último",
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    },
+                    search: "Buscar:"
+                }
+            });
+
+        }
+        function cargar2() {
+            var tableElement = $('#diseñoTable1').DataTable({
+                pageLength: 10,
+                lengthMenu: [5, 10, 15, 20, 100, 200, 500],
+                columnDefs: [
+                    {
+                        targets: [0, 6, 7], // Índices de las columnas a ocultar en vistas móviles
+                        className: 'hide-mobile'
+                    },
+                    {
+                        targets: [0], // Índices de las columnas a ocultar en vistas de escritorio
+                        className: 'hide-computer'
+                    }
+                ],
+                language: {
+                    lengthMenu: "Mostrar _MENU_ registros por página",
+                    zeroRecords: "Ningún registro encontrado",
+                    info: "Mostrando de (_START_ a _END_) de un total de _TOTAL_ registros",
+                    infoEmpty: "Ningún registro encontrado",
+                    infoFiltered: "(filtrados desde _MAX_ registros totales)",
+                    loadingRecords: "Cargando...",
+                    paginate: {
+                        first: "Primero",
+                        last: "Último",
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    },
+                    search: "Buscar:"
+                }
+            });
+
+        }
+
+        // Función para obtener las compras y mostrar en la tabla
+        function Compras() {
+            const tableElement = $('#diseñoTable');
+
+            if ($.fn.DataTable.isDataTable(tableElement)) {
+                tableElement.DataTable().destroy();
+            }
+
+            fetch(`${apiBaseUrl}/compra?fechaInicio=${document.getElementById('fechaInicio').value}&fechaFin=${document.getElementById('fechaFin').value}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Datos recibidos:', data);
+
+                    const tableBody = document.querySelector('#diseñoTable tbody');
+
+                    if (!tableBody) {
+                        console.error('No se encontró el elemento <tbody> de la tabla');
+                        return;
+                    }
+
+                    tableBody.innerHTML = ''; // Limpiar la tabla
+
+                    if (Array.isArray(data) && data.length > 0) {
+                        data.forEach((compras) => {
+                            const row = document.createElement('tr');
+
+                            row.innerHTML = `
+                    <td>${compras.Id_compra || '--'}</td>
+                    <td>${compras.Tipo_Documento_Comprobante || '--'}</td>
+                    <td>${compras.Documento_Compra}</td>
+                    <td>${compras.Proveedor || '--'}</td>
+                    <td>${compras.Metodo_Pago || '--'}</td>
+                    <td>${compras.Porcentaje_Descuento}</td>
+                    <td>${compras.Fecha_registro || '--'}</td>
+                    <td>${compras.SubTotal || '--'}</td>
+                    <td>${compras.Igv || '--'}</td>
+                    <td>${compras.Descuento || '--'}</td>
+                    <td>${compras.Total || '--'}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm edit-btn" onclick="obtenerDetallesCompras(${compras.Id_compra})">
+                            <i class="fas fa-eye"></i>
+                        </button>                                     
+                    </td>
+                    `;
+
+                            tableBody.appendChild(row);
+                        });
+
+                        // Inicializar DataTables en la tabla después de cargar los datos
+                        tableElement.DataTable({
+                            pageLength: 10,
+                            lengthMenu: [5, 10, 15, 20, 100, 200, 500],
+                            columnDefs: [
+                                {
+                                    targets: [0, 3, 4, 5, 6, 7, 8, 9], // Índices de las columnas a ocultar en vistas móviles
+                                    className: 'hide-mobile'
+                                },
+                                {
+                                    targets: [0], // Índices de las columnas a ocultar en vistas de escritorio
+                                    className: 'hide-computer'
+                                }
+                            ],
+                            language: {
+                                lengthMenu: "Mostrar _MENU_ registros por página",
+                                zeroRecords: "Ningún registro encontrado",
+                                info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
+                                infoEmpty: "Ningún registro encontrado",
+                                paginate: {
+                                    first: "Primero",
+                                    last: "Último",
+                                    next: "Siguiente",
+                                    previous: "Anterior"
+                                },
+                                search: "Buscar:"
+                            }
+                        });
+                    } else {
+                        // Si no hay datos, muestra un mensaje en la tabla
+                        tableBody.innerHTML = `
+                <tr>
+                    <td colspan="12" class="text-center">No hay registros para mostrar</td>
+                </tr>
+                `;
+                    }
+                })
+                .catch(error => console.error('Error al obtener los datos:', error));
+        }
+
+        // Función para obtener los detalles de una compra específica
+        function obtenerDetallesCompras(Id_compra) {
+            const tableElement = $('#diseñoTable1');
+
+            if ($.fn.DataTable.isDataTable(tableElement)) {
+                tableElement.DataTable().destroy();
+            }
+
+            fetch(`${apiBaseUrl}/compra/${Id_compra}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Datos recibidos:', data);
+
+                    const tableBody = document.querySelector('#diseñoTable1 tbody');
+
+                    if (!tableBody) {
+                        console.error('No se encontró el elemento <tbody> de la tabla');
+                        return;
+                    }
+
+                    tableBody.innerHTML = ''; // Limpiar la tabla
+
+                    if (Array.isArray(data) && data.length > 0) {
+                        data.forEach((detalles_compras) => {
+                            const row = document.createElement('tr');
+
+                            row.innerHTML = `
+                    <td>${detalles_compras.Id_detalles_compras || '--'}</td>
+                    <td>${detalles_compras.Codigo_barras || '--'}</td>
+                    <td>${detalles_compras.nombre_producto || '--'}</td>
+                    <td>${detalles_compras.Cantidad || '--'}</td>
+                    <td>${detalles_compras.Precio || '--'}</td>
+                    <td>${detalles_compras.Importe || '--'}</td> 
+                    <td>${detalles_compras.medida || '--'}</td>
+                    <td>${detalles_compras.marca || '--'}</td>
+                    <td>${detalles_compras.Descuento || '--'}</td>
+                    `;
+
+                            tableBody.appendChild(row);
+                        });
+
+                        // Inicializar DataTables en la tabla después de cargar los datos
+                        tableElement.DataTable({
+                            pageLength: 10,
+                            lengthMenu: [5, 10, 15, 20, 100, 200, 500],
+                            columnDefs: [
+                                {
+                                    targets: [0, 6, 7], // Índices de las columnas a ocultar en vistas móviles
+                                    className: 'hide-mobile'
+                                },
+                                {
+                                    targets: [0], // Índices de las columnas a ocultar en vistas de escritorio
+                                    className: 'hide-computer'
+                                }
+                            ],
+                            language: {
+                                lengthMenu: "Mostrar _MENU_ registros por página",
+                                zeroRecords: "Ningún registro encontrado",
+                                info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
+                                infoEmpty: "Ningún registro encontrado",
+                                paginate: {
+                                    first: "Primero",
+                                    last: "Último",
+                                    next: "Siguiente",
+                                    previous: "Anterior"
+                                },
+                                search: "Buscar:"
+                            }
+                        });
+                    } else {
+                        // Si no hay datos, muestra un mensaje en la tabla
+                        tableBody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="text-center">No hay registros para mostrar</td>
+                </tr>
+                `;
+                    }
+                })
+                .catch(error => console.error('Error al obtener los datos:', error));
+        }
+
+    </script>
+
+
+</body>
+
+</html>

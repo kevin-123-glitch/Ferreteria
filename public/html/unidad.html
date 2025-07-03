@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap5.min.css" />
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="../css/interfaces2.css"> <!-- Enlaza el archivo CSS global -->
+    <link rel="stylesheet" href="../css/modal.css"> <!-- Enlaza el archivo CSS global -->
+
+
+    <!-- Excel y PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.6.0/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-invoice-template@latest/dist/index.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+
+<body>
+
+<div class="content-wrapper">
+    <div class="card-header" style="margin-bottom: 8px;">
+        <h3 class="card-title">Listado de las unidades de medida de los producto </h3>
+    </div>
+        <div class="custom-container">
+            <div class="header-container">
+
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="dt-buttons">
+
+                    <button id="buttons-excel" class="dt-button buttons-excel buttons-html5" tabindex="0"
+                        aria-controls="diseñoTable" type="button" title="Exportar a Excel">
+                        <img src="../images/xls.png" alt="Exportar a Excel" class="icon-image">
+                    </button>
+
+                    <button id="exportToPDF" class="dt-button buttons-pdf buttons-html5" tabindex="0"
+                        aria-controls="diseñoTable" type="button" title="Exportar a PDF">
+                        <img src="../images/pdf.png" alt="Exportar a PDF" class="icon-image">
+                    </button>
+                </div>
+                <div class="search-container">
+                    <label for="search-input" class="form-label">Buscar:</label>
+                    <input type="search" id="search-input" class="form-control" placeholder=""
+                        aria-controls="diseñoTable">
+
+                    <!-- Botón para abrir el modal de registro -->
+                    <button id="Nuevo" class="dt-button buttons-Nuevo buttons-html5" type="button"
+                        title="Nuevo registro" onclick="abrirModalRegistrar()">
+                        <img src="../images/medida+.png" alt="Realizar nuevo registro" class="icon-image">
+                    </button>
+
+                </div>
+            </div>
+            <hr class="divider">
+            <div class="table-responsive ">
+                <table id="diseñoTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Unidad de medida</th>
+                            <th>Descripcion</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Las filas se llenarán dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="registrarUnidadModal" enctype="multipart/form-data tabindex=" role="dialog"
+            aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog custom-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Registrar datos de la unidad de medida</h5>
+                        <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                            <img src="../images/close-button.png" alt="Close" class="img-close" onclick="resetForm()">
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form id="unidadForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="id_unidad" name="id_unidad" class="form-control" readonly
+                                            placeholder="ID" oninput="validarNumero(this)" autocomplete="nope" required>
+                                        <label class="floating-label" for="id_unidad">Codigo de la unidad</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="nombre" name="nombre" class="form-control"
+                                            placeholder="Nombre " oninput="validarLetras(this)" required
+                                            autocomplete="nope">
+                                        <label class="floating-label" for="Nombre">Nombre de la unidad</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="descripcion" name="descripcion" class="form-control"
+                                            placeholder="Descripcion" oninput="validarLetras(this)" autocomplete="nope">
+                                        <label class="floating-label" for="descripcion">Descripcion</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                            <button type="submit" id="submitButton" class="btnes btn-primary">Registrar</button>
+                        </div>
+
+                    </div>
+
+                    </form>
+
+                    <div id="message" class="message mt-3"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- jQuery (completa) y DataTables -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Bootstrap 5 JS (sin jQuery) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- DataTables Responsive JS -->
+    <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.0/js/responsive.bootstrap5.min.js"></script>
+
+    <!-- Scripts personalizados -->
+    <script src="/config/api.js"></script>
+    <script src="../js/unidad.js"></script>
+    </div>
+
+
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap5.min.css" />
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="../css/interfaces.css"> <!-- Enlaza el archivo CSS global -->
+    <link rel="stylesheet" href="../css/modal.css"> <!-- Enlaza el archivo CSS global -->
+
+
+    <!-- Excel y PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.6.0/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-invoice-template@latest/dist/index.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+
+    <div class="content-wrapper">
+        <div class="card-header"  style="margin-bottom: 8px;">
+            <h3 class="card-title">Listado del Personal</h3>
+
+        </div>
+
+        <div class="custom-container">
+    
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="dt-buttons">
+    
+                    <button id="buttons-excel" class="dt-button buttons-excel buttons-html5" tabindex="0"
+                        aria-controls="diseñoTable" type="button" title="Exportar a Excel">
+                        <img src="../images/xls.png" alt="Exportar a Excel" class="icon-image">
+                    </button>
+    
+                    <button id="exportToPDF" class="dt-button buttons-pdf buttons-html5" tabindex="0"
+                        aria-controls="diseñoTable" type="button" title="Exportar a PDF">
+                        <img src="../images/pdf.png" alt="Exportar a PDF" class="icon-image">
+                    </button>
+    
+                </div>
+    
+                <div class="search-container">
+                    <label for="search-input" class="form-label">Buscar:</label>
+                    <input type="search" id="search-input" class="form-control" placeholder="" aria-controls="diseñoTable">
+    
+                    <!-- Botón para abrir el modal de registro -->
+                    <button id="Nuevo" class="dt-button buttons-Nuevo buttons-html5" type="button" title="Nuevo registro"
+                        onclick="abrirModalRegistrar()">
+                        <img src="../images/Nuevo.png" alt="Realizar nuevo registro" class="icon-image">
+                    </button>
+    
+                </div>
+    
+            </div>
+    
+            <hr class="divider">
+    
+            <div class="table-responsive">
+                <table id="diseñoTable">
+                    <thead>
+                        <tr>
+                            <th class="hide-computer">ID</th>
+                            <th class="hide-mobile">Tipo</th>
+                            <th class="hide-mobile">Documento</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th class="hide-mobile">Provincia</th>
+                            <th class="hide-mobile">Distrito</th>
+                            <th class="hide-mobile">Dirección</th>
+                            <th class="hide-mobile">Correo</th>
+                            <th class="hide-mobile">Teléfono</th>
+                            <th class="hide-mobile">Fecha Acceso</th>
+                            <th>Perfil</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                            <th class="hide-computer">Contraseña</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Las filas se llenarán dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+    
+        </div>
+    </div>
+    
+ 
+    <!-- Modal -->
+    <div class="modal fade" id="registrarPersonalModal" enctype="multipart/form-data tabindex=" role="dialog"
+        aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog custom-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Registrar datos del Personal</h5>
+                    <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                        <img src="../images/close-button.png" alt="Close" class="img-close" onclick="resetForm()">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="personalForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="floating-label-select-group">
+                                    <select id="id_tipo_doc" name="id_tipo_doc" class="form-control" required
+                                        onchange="validarSelect(this)">
+                                        <option value="" disabled selected class="default-option">Tipo de Documento
+                                        </option>
+                                        <!-- Agregar opciones de perfil aquí -->
+                                    </select>
+                                    <label class="floating-label" for="id_tipo_doc ">Tipo de Documento</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="floating-label-group">
+                                    <input type="text" id="numero_documento" name="numero_documento"
+                                        class="form-control" placeholder="Número de documento"
+                                        oninput="validarNumero(this)" autocomplete="nope" required>
+                                    <label class="floating-label" for="numero_documento">Número de documento</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="floating-label-group">
+                                    <input type="text" id="nombre" name="nombre" class="form-control"
+                                        placeholder="Nombre " oninput="validarLetras(this)" required
+                                        autocomplete="nope">
+                                    <label class="floating-label" for="Nombre">Nombre</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="floating-label-group">
+
+                                    <input type="text" id="apellido" name="apellido" class="form-control"
+                                        placeholder="Apellido" oninput="validarLetras(this)" required
+                                        autocomplete="nope">
+                                    <label class="floating-label" for="Apellido">Apellido</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="floating-label-group">
+                                    <input type="text" id="provincia" name="provincia" class="form-control"
+                                        placeholder="Provincia" oninput="validarLetras(this)" required
+                                        autocomplete="nope">
+                                    <label class="floating-label" for="provincia">Provincia</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="floating-label-group">
+                                    <input type="text" id="distrito" name="distrito" class="form-control"
+                                        placeholder="Distrito" oninput="validarLetras(this)" required
+                                        autocomplete="nope">
+                                    <label class="floating-label" for="distrito">Distrito</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="floating-label-group">
+                                    <input type="text" id="telefono" name="telefono" class="form-control"
+                                        placeholder="Teléfono" oninput="validarTelefono(this)" required
+                                        autocomplete="nope">
+                                    <label class="floating-label" for="telefono">Teléfono</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="floating-label-group">
+                                    <input type="email" id="correo" name="correo" class="form-control"
+                                        placeholder="Correo electrónico" oninput="validarCorreo(this)" required
+                                        autocomplete="nope">
+                                    <label class="floating-label" for="correo">Correo electrónico</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="floating-label-group">
+                                    <input type="text" id="direccion" name="direccion" class="form-control"
+                                        placeholder="Dirección" oninput="validarCampovacios()" required
+                                        autocomplete="nope">
+                                    <label class="floating-label" for="direccion">Dirección</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="floating-label-group">
+                                    <input type="password" id="contrasena" name="contrasena" class="form-control"
+                                        placeholder="Contraseña" oninput="validarContrasena()" required
+                                        autocomplete="nope">
+                                    <label class="floating-label" for="Contraseña">Contraseña</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="floating-label-group">
+                                    <input type="password" id="Rcontrasena" name="Rcontrasena" class="form-control"
+                                        placeholder="Repetir contraseña" oninput="validarCoincidenciaContrasena()"
+                                        required autocomplete="nope">
+                                    <label class="floating-label" for="Repetir contraseña">Repetir
+                                        contraseña</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="floating-label-select-group">
+                                    <select id="id_perfil" name="id_perfil" class="form-control"
+                                        onchange="validarSelect(this)" required autocomplete="nope">
+                                        <option value="" disabled selected class="default-option">Selecciona un
+                                            Perfil</option>
+                                        <!-- Opciones cargadas dinámicamente -->
+                                    </select>
+                                    <label class="floating-label" for="id_perfil">Selecciona un Perfil</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="floating-label-select-group">
+
+                                    <select id="id_estado_usuario" name="id_estado_usuario" class="form-control"
+                                        onchange="validarSelect(this)" required autocomplete="nope">
+                                        <option value="" disabled selected class="default-option">Selecciona un
+                                            Estado</option>
+                                    </select>
+                                    <label class="floating-label" for="id_estado_usuario">Selecciona un
+                                        Estado</label>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="floating-label-group">
+                                    <input type="text" id="foto" name="foto" class="form-control"
+                                        placeholder="Enlace de la foto" oninput="validateURL(this)" required
+                                        autocomplete="off">
+                                    <label class="floating-label" for="foto">Enlace web de la foto</label>
+
+                                    <i id="showImageIcon" class="fas fa-eye" onclick="handleImagePreview()"></i>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <button type="submit" id="submitButton" class="btnes btn-primary">Registrar</button>
+
+                            </div>
+                        </div>
+                    </form>
+
+                    <div id="message" class="message mt-3"></div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- jQuery (completa) y DataTables -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Bootstrap 5 JS (sin jQuery) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- DataTables Responsive JS -->
+    <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.0/js/responsive.bootstrap5.min.js"></script>
+
+    <!-- Scripts personalizados -->
+    <script src="/config/api.js"></script>
+    <script src="../js/personal.js"></script>
+    </div>
+
+</body>
+
+</html>
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadPerfiles();
+        loadDocIdent();
+        loadEstadoUsuario();
+
+
+        document.getElementById('personalForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            if (isEditMode) {
+                Modificar();  // Llamar a la función de modificar
+            } else {
+                Registrar();  // Llamar a la función de registrar
+
+            }
+        });
+
+
+
+    });
+
+
+
+    //*************************************************************************************************
+    ////---- ocultar etiqueta flotante del select -->
+
+
+
+    //*************************************************************************************************
+    ////---- Registros personales -->
+
+
+
+
+    const showImageIcon = document.getElementById('showImageIcon');
+    const fotoInput = document.getElementById('foto');
+
+
+    async function handleImagePreview() {
+
+        const showImageIcon = document.getElementById('showImageIcon');
+        const urlInput = document.getElementById('foto');
+        const imageUrl = urlInput.value.trim();
+
+        if (!imageUrl) {
+            return Swal.fire({
+                title: 'No se ha proporcionado una URL',
+                text: 'Por favor, ingresa una URL de imagen.',
+                icon: 'info',
+                confirmButtonText: 'OK'
+            });
+        }
+
+        try {
+            // Verificar si la URL es una URL válida y la imagen existe
+            const response = await fetch(imageUrl, { method: 'HEAD' });
+
+            if (!response.ok) {
+                throw new Error('La URL no es válida o la imagen no existe.');
+            }
+
+            Swal.fire({
+                title: 'Vista previa de la imagen',
+                imageUrl: imageUrl,
+                imageAlt: 'Vista previa',
+                confirmButtonText: 'Cerrar',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar'
+            });
+
+        } catch (error) {
+            Swal.fire({
+                title: 'Error al cargar la imagen',
+                text: 'No se pudo visualizar la imagen. Verifica la URL.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
+    }
+    async function Registrar(event) {
+        if (event) event.preventDefault(); // Prevenir el envío por defecto
+
+        // Validaciones
+        const arePasswordsValid = validatePasswords();
+        const isPhoneNumberValid = validatePhoneNumber();
+        const isDocumentNumberValid = validateDocumentNumber();
+        const isEmailValid = validateEmail();
+
+        if (!arePasswordsValid || !isPhoneNumberValid || !isDocumentNumberValid || !isEmailValid) {
+            let errorMessage = '';
+
+            if (!arePasswordsValid) {
+                errorMessage += 'Las contraseñas no coinciden.\n';
+            }
+            if (!isPhoneNumberValid) {
+                errorMessage += 'Número de teléfono inválido. Asegúrate de que tenga 8 dígitos.\n';
+            }
+            if (!isDocumentNumberValid) {
+                errorMessage += 'Número de documento inválido. Debe tener entre 6 y 14 dígitos.\n';
+            }
+            if (!isEmailValid) {
+                errorMessage += 'Correo electrónico inválido.\n';
+            }
+
+            Swal.fire({
+                title: 'Error de validación',
+                text: errorMessage.trim(),
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
+        // Obtener valores de los campos del formulario
+        const Numero_documento = document.getElementById('numero_documento').value;
+        const Nombre = document.getElementById('nombre').value;
+        const Apellido = document.getElementById('apellido').value;
+        const Provincia = document.getElementById('provincia').value;
+        const Distrito = document.getElementById('distrito').value;
+        const Direccion = document.getElementById('direccion').value;
+        const Correo = document.getElementById('correo').value;
+        const Telefono = document.getElementById('telefono').value;
+        const Contraseña = document.getElementById('contrasena').value;
+        const ID_Tipo_Doc = document.getElementById('id_tipo_doc').value;
+        const Id_Estado_usuario = document.getElementById('id_estado_usuario').value;
+        const Id_Perfil = document.getElementById('id_perfil').value;
+        const Foto = document.getElementById('foto').value;
+
+
+        // Mostrar cuadro de diálogo de confirmación
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Los datos se registrarán de forma permanente.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, guardar',
+            cancelButtonText: 'Cancelar'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch(`${apiBaseUrl}/personal/registrar`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            numero_documento: Numero_documento,
+                            nombre: Nombre,
+                            apellido: Apellido,
+                            provincia: Provincia,
+                            distrito: Distrito,
+                            direccion: Direccion,
+                            correo: Correo,
+                            telefono: Telefono,
+                            contrasena: Contraseña,
+                            foto: Foto,
+                            id_tipo_doc: ID_Tipo_Doc,
+                            id_estado_usuario: Id_Estado_usuario,
+                            id_perfil: Id_Perfil,
+                        })
+                    });
+
+                    const text = await response.text(); // Leer la respuesta como texto
+                    console.log('Respuesta del servidor:', text); // Imprimir la respuesta para depuración
+
+                    resetForm();
+                    updateFloatingLabels(false);
+                    obtenerPersonal(); // Actualiza la lista después de guardar
+
+                    if (response.ok) {
+                        // Mostrar mensaje de éxito después de que el modal se haya cerrado
+                        Swal.fire({
+                            title: '¡Registros guardados!',
+                            text: 'El personal se guardó exitosamente.',
+                            icon: 'success',
+                            timer: 1000,               // Tiempo en milisegundos (3000 ms = 3 segundos)
+                            showConfirmButton: false    // Ocultar botón de confirmación
+                        })
+                    } else {
+                        Swal.fire('Error', `Error: ${text}`, 'error');
+                    }
+                } catch (error) {
+                    console.error('Error al enviar la solicitud:', error);
+                    Swal.fire('Error', 'Error al actualizar el personal', 'error');
+                }
+            }
+        });
+    }
+
+
+    async function Modificar(event) {
+        if (event) event.preventDefault(); // Prevenir el envío por defecto
+
+        // Validaciones
+        const arePasswordsValid = validatePasswords();
+        const isPhoneNumberValid = validatePhoneNumber();
+        const isDocumentNumberValid = validateDocumentNumber();
+        const isEmailValid = validateEmail();
+
+        if (!arePasswordsValid || !isPhoneNumberValid || !isDocumentNumberValid || !isEmailValid) {
+            let errorMessage = '';
+
+            if (!arePasswordsValid) {
+                errorMessage += 'Las contraseñas no coinciden.\n';
+            }
+            if (!isPhoneNumberValid) {
+                errorMessage += 'Número de teléfono inválido. Asegúrate de que tenga 8 dígitos.\n';
+            }
+            if (!isDocumentNumberValid) {
+                errorMessage += 'Número de documento inválido. Debe tener entre 6 y 14 dígitos.\n';
+            }
+            if (!isEmailValid) {
+                errorMessage += 'Correo electrónico inválido.\n';
+            }
+
+            Swal.fire({
+                title: 'Error de validación',
+                text: errorMessage.trim(),
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
+        // Mostrar el mensaje de confirmación
+        const confirmResult = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡Se modificará la información del personal!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, modificar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (!confirmResult.isConfirmed) {
+            return; // Si el usuario cancela, no hacemos nada
+        }
+
+        // Cerrar el modal antes de proceder
+        $('#miModal').modal('hide'); // Asegúrate de que el ID del modal coincida con el que estás usando
+
+        // Obtener valores de los campos del formulario
+        const Numero_documento = document.getElementById('numero_documento').value;
+        const Nombre = document.getElementById('nombre').value;
+        const Apellido = document.getElementById('apellido').value;
+        const Provincia = document.getElementById('provincia').value;
+        const Distrito = document.getElementById('distrito').value;
+        const Direccion = document.getElementById('direccion').value;
+        const Correo = document.getElementById('correo').value;
+        const Telefono = document.getElementById('telefono').value;
+        const Contraseña = document.getElementById('contrasena').value;
+        const ID_Tipo_Doc = document.getElementById('id_tipo_doc').value;
+        const Id_Estado_usuario = document.getElementById('id_estado_usuario').value;
+        const Id_Perfil = document.getElementById('id_perfil').value;
+        const Foto = document.getElementById('foto').value;
+
+
+        try {
+            const response = await fetch(`${apiBaseUrl}/personal/modificar/${Numero_documento}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    numero_documento: Numero_documento,
+                    nombre: Nombre,
+                    apellido: Apellido,
+                    provincia: Provincia,
+                    distrito: Distrito,
+                    direccion: Direccion,
+                    correo: Correo,
+                    telefono: Telefono,
+                    contrasena: Contraseña,
+                    foto: Foto,
+                    id_tipo_doc: ID_Tipo_Doc,
+                    id_estado_usuario: Id_Estado_usuario,
+                    id_perfil: Id_Perfil
+                })
+            });
+
+            const text = await response.text(); // Leer la respuesta como texto
+            console.log('Respuesta del servidor:', text); // Imprimir la respuesta para depuración
+
+            if (response.ok) {
+                const result = JSON.parse(text); // Intentar analizar el texto como JSON
+                // Mostrar mensaje de éxito después de que el modal se haya cerrado
+                const modal = bootstrap.Modal.getInstance(document.getElementById('registrarPersonalModal'));
+                modal.hide();
+                obtenerPersonal(); // Actualiza la lista después de modificar
+                resetForm();
+                updateFloatingLabels(false);
+
+                Swal.fire({
+                    title: '¡Datos modificados!',
+                    text: 'El personal se modificó exitosamente.',
+                    icon: 'success',
+                    timer: 1000,               // Tiempo en milisegundos (3000 ms = 3 segundos)
+                    showConfirmButton: false    // Ocultar botón de confirmación
+                })
+            } else {
+                Swal.fire('Error', `Error: ${text}`, 'error');
+            }
+        } catch (error) {
+            console.error('Error al enviar la solicitud:', error);
+            Swal.fire('Error', 'Error al actualizar el personal', 'error');
+        }
+    }
+
+
+    // Función para limpiar y restablecer los campos del formulario
+    function resetForm() {
+        // Restablecer los valores de los campos de texto
+        document.getElementById('numero_documento').value = '';
+        document.getElementById('nombre').value = '';
+        document.getElementById('apellido').value = '';
+        document.getElementById('provincia').value = '';
+        document.getElementById('distrito').value = '';
+        document.getElementById('direccion').value = '';
+        document.getElementById('correo').value = '';
+        document.getElementById('telefono').value = '';
+        document.getElementById('contrasena').value = '';
+        document.getElementById('Rcontrasena').value = '';
+        document.getElementById('foto').value = ''; // Limpiar el campo de archivo
+        // Restablecer los combo box a su primer valor
+        document.getElementById('id_tipo_doc').selectedIndex = 0; // O usar .value = '';
+        document.getElementById('id_estado_usuario').selectedIndex = 0; // O usar .value = '';
+        document.getElementById('id_perfil').selectedIndex = 0; // O usar .value = '';
+
+        // Restablecer el color de borde de los campos
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.style.borderColor = ''; // Restablecer el color de borde a su estado original
+        });
+    }
+
+
+    //*************************************************************************************************
+
+    ////---- Convercion de imagen -->
+
+
+
+
+    //************************************************************************************************* */  
+    ////---- Carga de los combo  -->
+
+
+    function loadEstadoUsuario() {
+        fetch(`${apiBaseUrl}/personal/getEstado_usuario`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al cargar datos');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const select = document.getElementById('id_estado_usuario');
+                select.innerHTML = '<option value="" disabled selected>Selecciona un estado</option>'; // Limpia y agrega opción inicial
+                data.forEach(estado => {
+                    const option = document.createElement('option');
+                    option.value = estado.Id_Estado_usuario;
+                    option.textContent = estado.estado_usuario;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error al obtener estados de usuario:', error));
+    }
+
+    function loadDocIdent() {
+        fetch(`${apiBaseUrl}/personal/getTdoc_ident`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al cargar datos');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const select = document.getElementById('id_tipo_doc');
+                /* select.innerHTML = '<option value="" disabled selected>Selecciona un tipo</option>';*/ // Limpia y agrega opción inicial
+                data.forEach(tdoc => {
+                    const option = document.createElement('option');
+                    option.value = tdoc.ID_Tipo_Doc;
+                    option.textContent = tdoc.Documeto_identidad;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error al obtener tipos de documento:', error));
+    }
+
+    function loadPerfiles() {
+        fetch(`${apiBaseUrl}/personal/perfiles`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al cargar datos');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const select = document.getElementById('id_perfil');
+                /*select.innerHTML = '<option value="" disabled selected>Selecciona un perfil</option>';*/ // Limpia y agrega opción inicial
+                data.forEach(perfil => {
+                    const option = document.createElement('option');
+                    option.value = perfil.ID_Perfil;
+                    option.textContent = perfil.Perfil;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error al obtener perfiles:', error));
+    }
+
+
+
+
+    //************************************************************************************************* */  
+
+
+    /////--------validacion boton.-------------
+
+    // Validación de contraseñas
+    function validatePasswords() {
+        const password = document.getElementById('contrasena').value;
+        const confirmPassword = document.getElementById('Rcontrasena').value; // Suponiendo que tienes un campo para confirmar la contraseña
+
+        return password === confirmPassword;
+    }
+
+    // Validación del número de teléfono
+    function validatePhoneNumber() {
+        const input = document.getElementById('telefono');
+        let value = input.value;
+
+        // Elimina todos los caracteres que no sean números
+        const cleaned = value.replace(/[^0-9]/g, '');
+
+        // Valida el número con el prefijo +51 9
+        let numberPart = cleaned;
+
+        if (cleaned.startsWith('51') && cleaned.length > 2) {
+            numberPart = cleaned.substring(2);
+            if (numberPart.startsWith('9')) {
+                numberPart = numberPart.substring(1); // Elimina el 9
+            }
+        }
+
+        if (numberPart.length > 8) {
+            numberPart = numberPart.substring(0, 8);
+        }
+
+        // Actualiza el valor del campo
+        input.value = `+51 9${numberPart}`;
+
+        // Valida si el número tiene exactamente 8 dígitos después del prefijo
+        return numberPart.length === 8;
+    }
+
+    // Validación del número de documento
+    function validateDocumentNumber() {
+        const input = document.getElementById('numero_documento');
+        let value = input.value;
+
+        // Elimina todos los caracteres que no sean números
+        const cleaned = value.replace(/[^0-9]/g, '');
+        input.value = cleaned;
+
+        // Verifica longitud
+        return cleaned.length >= 6 && cleaned.length <= 14;
+    }
+
+    // Validación del correo electrónico
+    function validateEmail() {
+        const input = document.getElementById('correo');
+        const value = input.value;
+
+        // Expresión regular para validar correos electrónicos
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(value);
+    }
+
+
+
+    ////---- validaciones -->
+
+    function validarNumero(input) {
+        const value = input.value;
+        // Elimina caracteres no numéricos
+        const cleaned = value.replace(/[^0-9]/g, '');
+        input.value = cleaned;
+
+        // Verifica longitud
+        if (cleaned.length >= 6 && cleaned.length <= 14) {
+            input.style.borderColor = 'black'; // Color de borde para válido
+        } else {
+            input.style.borderColor = 'red'; // Color de borde para inválido
+        }
+    }
+
+    function validarLetras(input) {
+        // Obtiene el valor actual del campo de entrada
+        const value = input.value;
+
+        // Reemplaza todo lo que no sea una letra o espacio
+        const cleaned = value.replace(/[^a-zA-Z\s]/g, '');
+
+        // Actualiza el valor del campo
+        input.value = cleaned;
+
+        // Valida si el valor contiene solo letras y espacios y tiene más de 2 caracteres
+        const isValid = /^[a-zA-Z\s]{3,}$/.test(cleaned);
+
+        // Cambia el borde del campo en función de la validez
+        if (isValid) {
+            input.style.borderColor = 'black'; // Color de borde para campo válido
+        } else {
+            input.style.borderColor = 'red'; // Color de borde para campo inválido
+        }
+    }
+
+    function validarSelect(select) {
+        // Obtiene el valor seleccionado
+        const value = select.value;
+
+        // Valida que se haya seleccionado una opción válida (no el valor predeterminado)
+        const isValid = value !== "";
+
+        // Cambia el borde del campo en función de la validez
+        if (isValid) {
+            select.style.borderColor = 'black'; // Color de borde para selección válida
+        } else {
+            select.style.borderColor = 'red'; // Color de borde para selección inválida
+        }
+
+        return isValid;
+    }
+
+    function validarCorreo(input) {
+        let value = input.value;
+
+        // Expresión regular básica para validar correos electrónicos
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Autocompletar con "@gmail.com" si el usuario escribe "@"
+        if (value.includes('@') && !value.includes('@gmail.com')) {
+            const parts = value.split('@');
+            if (parts[1] === '') {
+                input.value = `${parts[0]}@gmail.com`;
+                value = input.value; // Actualizar el valor con la nueva cadena
+            }
+        }
+
+        // Validar correo electrónico
+        if (regex.test(value)) {
+            input.style.borderColor = 'black'; // Color de borde para válido
+        } else {
+            input.style.borderColor = 'red'; // Color de borde para inválido
+        }
+    }
+
+    function validarTelefono(input) {
+        let value = input.value;
+
+        // Elimina todos los caracteres que no sean números
+        const cleaned = value.replace(/[^0-9]/g, '');
+
+        // Valida el número con el prefijo +51 9
+        let numberPart = cleaned;
+
+        // Si el número comienza con el prefijo +51 9
+        if (cleaned.startsWith('51') && cleaned.length > 2) {
+            numberPart = cleaned.substring(2);
+            if (numberPart.startsWith('9')) {
+                numberPart = numberPart.substring(1); // Elimina el 9
+            }
+        }
+
+        // Solo permite hasta 8 dígitos después del prefijo +51 9
+        if (numberPart.length > 8) {
+            numberPart = numberPart.substring(0, 8);
+        }
+
+        // Actualiza el valor del campo
+        input.value = `+51 9${numberPart}`;
+
+        // Valida si el número tiene exactamente 8 dígitos después del prefijo
+        const isValid = numberPart.length === 8;
+
+        // Cambia el borde del campo en función de la validez
+        if (isValid) {
+            input.style.borderColor = 'black'; // Color de borde para campo válido
+        } else {
+            input.style.borderColor = 'red'; // Color de borde para campo inválido
+        }
+    }
+
+    function validarSelect(select) {
+        // Obtiene el valor seleccionado
+        const value = select.value;
+
+        // Valida que se haya seleccionado una opción válida (no el valor predeterminado)
+        const isValid = value !== "";
+
+        // Cambia el borde del campo en función de la validez
+        if (isValid) {
+            select.style.borderColor = 'black'; // Color de borde para selección válida
+        } else {
+            select.style.borderColor = 'red'; // Color de borde para selección inválida
+        }
+
+        return isValid;
+    }
+
+    function validarContrasena() {
+        const contrasena = document.getElementById('contrasena');
+
+        // Validar si la contraseña está vacía
+        if (contrasena.value.trim() === '') {
+            contrasena.style.borderColor = 'red';
+        } else {
+            contrasena.style.borderColor = 'black';
+        }
+    }
+
+    function validarCoincidenciaContrasena() {
+        const contrasena = document.getElementById('contrasena');
+        const Rcontrasena = document.getElementById('Rcontrasena');
+        const mensaje = document.getElementById('mensajeCoincidencia');
+
+        // Validar si las contraseñas coinciden
+        if (Rcontrasena.value.trim() !== '') {
+            if (contrasena.value === Rcontrasena.value) {
+                Rcontrasena.style.borderColor = 'black';
+            } else {
+                Rcontrasena.style.borderColor = 'red';
+            }
+        } else {
+            Rcontrasena.style.borderColor = ''; // Restablecer borde si está vacío
+        }
+    }
+
+    function validarArchivo(input) {
+        const file = input.files[0]; // Obtiene el archivo seleccionado
+        const validExtensions = ['image/jpeg', 'image/png', 'image/gif']; // Tipos de archivos permitidos
+
+        // Elimina estilos previos
+        input.style.borderColor = 'transparent'; // Restablece el borde al estado predeterminado
+
+        // Obtiene el elemento de la etiqueta
+        const label = input.nextElementSibling;
+
+        if (file) {
+            if (validExtensions.includes(file.type)) {
+                // Archivo válido
+                input.style.borderColor = 'black'; // Borde verde para archivos válidos
+                label.textContent = file.name; // Muestra el nombre del archivo seleccionado
+                label.style.color = 'black'; // Color del texto del label para archivos válidos
+            } else {
+                // Archivo inválido
+                input.style.borderColor = 'red'; // Borde rojo para archivos inválidos
+                label.textContent = 'Archivo no permitido. Seleccione una imagen'; // Mensaje de error
+                label.style.color = 'red'; // Color del texto del label para archivos inválidos
+                input.value = ''; // Limpia el campo de archivo
+            }
+        } else {
+            // No se ha seleccionado ningún archivo
+            label.textContent = 'Seleccionar foto'; // Mensaje predeterminado
+            label.style.color = 'black'; // Color del texto del label predeterminado
+            input.style.borderColor = 'transparent'; // Restablece el borde al estado predeterminado
+        }
+
+    }
+
+    function validarCampovacios() {
+        const direccion = document.getElementById('direccion');
+
+        // Validar si la contraseña está vacía
+        if (direccion.value.trim() === '') {
+            direccion.style.borderColor = 'red';
+        } else {
+            direccion.style.borderColor = 'black';
+        }
+    }
+
+
+</script>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Productos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        img {
+            width: 100px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Catálogo de Productos</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Código de Barras</th>
+                <th>Imagen</th>
+            </tr>
+        </thead>
+        <tbody id="product-list">
+            <!-- Los productos se cargarán aquí -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Datos de ejemplo en un array
+    const productos = [
+        {
+            Id_producto: 1,
+            Codigo_barras: '1234567890123',
+            Nombre: 'Taladro Inalámbrico',
+            Url_foto: 'https://example.com/images/taladro.jpg'
+        },
+        {
+            Id_producto: 2,
+            Codigo_barras: '9876543210987',
+            Nombre: 'Martillo',
+            Url_foto: 'https://example.com/images/martillo.jpg'
+        },
+        {
+            Id_producto: 3,
+            Codigo_barras: '555666777888',
+            Nombre: 'Llave Inglesa',
+            Url_foto: 'https://example.com/images/llave.jpg'
+        }
+        // Agrega más productos aquí...
+    ];
+
+    // Función para cargar los productos en la tabla
+    function cargarProductos() {
+        const productList = document.getElementById('product-list');
+
+        productos.forEach(producto => {
+            const row = document.createElement('tr');
+
+            // Columna del nombre
+            const nombreCell = document.createElement('td');
+            nombreCell.textContent = producto.Nombre;
+            row.appendChild(nombreCell);
+
+            // Columna del código de barras
+            const codigoCell = document.createElement('td');
+            codigoCell.textContent = producto.Codigo_barras;
+            row.appendChild(codigoCell);
+
+            // Columna de la imagen
+            const imagenCell = document.createElement('td');
+            const img = document.createElement('img');
+            img.src = producto.Url_foto;
+            img.alt = producto.Nombre;
+            imagenCell.appendChild(img);
+            row.appendChild(imagenCell);
+
+            // Añadir la fila a la tabla
+            productList.appendChild(row);
+        });
+    }
+
+    // Cargar los productos al cargar la página
+    window.onload = cargarProductos;
+</script>
+
+</body>
+</html>

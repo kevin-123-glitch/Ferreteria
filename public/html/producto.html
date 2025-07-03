@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap5.min.css" />
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="../css/interfaces2.css"> <!-- Enlaza el archivo CSS global -->
+    <link rel="stylesheet" href="../css/modal.css"> <!-- Enlaza el archivo CSS global -->
+
+
+    <!-- Excel y PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.6.0/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-invoice-template@latest/dist/index.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+
+<body>
+
+    <div class="content-wrapper">
+        <div class="card-header" style="margin-bottom: 8px;">
+            <h3 class="card-title">Listado de los Productos</h3>
+        </div>
+        <div class="custom-container">
+            <div class="header-container">
+
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="dt-buttons">
+
+                    <button id="buttons-excel" class="dt-button buttons-excel buttons-html5" tabindex="0"
+                        aria-controls="diseñoTable" type="button" title="Exportar a Excel">
+                        <img src="../images/xls.png" alt="Exportar a Excel" class="icon-image">
+                    </button>
+
+                    <button id="exportToPDF" class="dt-button buttons-pdf buttons-html5" tabindex="0"
+                        aria-controls="diseñoTable" type="button" title="Exportar a PDF">
+                        <img src="../images/pdf.png" alt="Exportar a PDF" class="icon-image">
+                    </button>
+
+
+                </div>
+                <div class="search-container">
+                    <label for="search-input" class="form-label">Buscar:</label>
+                    <input type="search" id="search-input" class="form-control" placeholder=""
+                        aria-controls="diseñoTable">
+
+                    <!-- Botón para abrir el modal de registro -->
+                    <button id="Nuevo" class="dt-button buttons-Nuevo buttons-html5" type="button"
+                        title="Nuevo registro" onclick="abrirModalRegistrar()">
+                        <img src="../images/producto+.png" alt="Realizar nuevo registro" class="icon-image">
+                    </button>
+
+                </div>
+            </div>
+            <hr class="divider">
+            <div class="table-responsive ">
+                <table id="diseñoTable">
+                    <thead>
+                        <tr>
+                            <th class="hide-computer">ID</th>
+                            <th>Codigo barras</th>
+                            <th class="hide-mobile">Categoria</th>
+                            <th class="hide-mobile">Marca</th>
+                            <th class="hide-mobile">Unidad de medida</th>
+                            <th>Producto</th>
+                            <th class="hide-computer">Descripcion</th>
+                            <th>Precio C</th>
+                            <th>Precio V</th>
+                            <th>Stock</th>
+                            <th class="hide-mobile">Stock_minimo</th>
+                            <th class="hide-mobile">Stock_maximo</th>
+                            <th class="hide-computer">Ubicacion</th>
+                            <th class="hide-mobile">Fecha de caducidad</th>
+                            <th class="hide-computer">URL</th>
+
+                            <th>Acciones</th>
+
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Las filas se llenarán dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="registrarProductoModal" enctype="multipart/form-data tabindex=" role="dialog"
+            aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog custom-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Registrar datos del producto</h5>
+                        <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                            <img src="../images/close-button.png" alt="Close" class="img-close" onclick="resetForm()">
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form id="productoForm">
+
+                            <div class="row" style="display: none;">
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="id_producto" name="id_producto" class="form-control"
+                                            placeholder="Codigo" oninput="validateNumero(this)" autocomplete="off"
+                                            required>
+                                        <label class="floating-label" for="Id_producto">Codigo del producto</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="codigo_barras" name="codigo_barras" class="form-control"
+                                            placeholder="Codigo" oninput="validateNumero(this)" autocomplete="off"
+                                            required>
+                                        <i id="IconoBarras"  onclick="generarCodigoBarras(this)" class="fas fa-barcode icon"  autocomplete="nope"></i>
+
+                                        <label class="floating-label" for="codigo_barras">Codigo de barras</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="floating-label-select-group">
+                                        <select id="id_categoria" name="id_categoria" class="form-control" required
+                                            onchange="validarSelect(this)">
+                                            <option value="" disabled selected class="default-option"></option>
+                                            <!-- Agregar opciones de perfil aquí -->
+                                        </select>
+                                        <label class="floating-label" for="id_categoria ">Categoria</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="floating-label-select-group">
+                                        <select id="id_marca" name="id_marca" class="form-control" required
+                                            onchange="validarSelect(this)">
+                                            <option value="" disabled selected class="default-option"></option>
+                                            <!-- Agregar opciones de perfil aquí -->
+                                        </select>
+                                        <label class="floating-label" for="id_marca ">Marca</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="floating-label-select-group">
+                                        <select id="id_unidad" name="id_unidad" class="form-control" required
+                                            onchange="validarSelect(this)">
+                                            <option value="" disabled selected class="default-option"></option>
+                                            <!-- Agregar opciones de unidad aquí -->
+                                        </select>
+                                        <label class="floating-label" for="id_unidad ">Unidad de medida</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="nombre" name="nombre" class="form-control"
+                                            placeholder="Nombre " oninput="validateSoloLetras(this)" required
+                                            autocomplete="nope">
+                                        <label class="floating-label" for="Nombre">Nombre</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="descripcion" name="descripcion" class="form-control"
+                                            placeholder="Descripcion" oninput="validateLetras(this)" 
+                                            autocomplete="nope">
+                                        <label class="floating-label" for="descripcion">Descripcion</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="precio_c" name="precio_c" class="form-control"
+                                            placeholder="Precio de compra" oninput="validatePrecio(this)" required
+                                            autocomplete="nope">
+                                        <label class="floating-label" for="precio">Precio de compra</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="precio_v" name="precio_v" class="form-control"
+                                            placeholder="Precio de venta" oninput="validatePrecio(this)" required
+                                            autocomplete="nope">
+                                        <label class="floating-label" for="precio">Precio de venta</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="number" id="stock_minimo" name="stock_minimo" class="form-control"
+                                            placeholder="Stock Minimo" oninput="validateNumero(this)" required
+                                            autocomplete="nope">
+                                        <label class="floating-label" for="stock_minimo">Stock Minimo</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="number" id="stock_maximo" name="stock_maximo" class="form-control"
+                                            placeholder="Stock Maximo" oninput="validateNumero(this)" required
+                                            autocomplete="nope">
+                                        <label class="floating-label" for="stock_maximo">Stock Maximo</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="ubicacion" name="ubicacion" class="form-control"
+                                            placeholder="Ubicacion" oninput="validateLetras(this)" 
+                                            autocomplete="nope">
+                                        <label class="floating-label" for="ubicacion">Ubicacion</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="fecha_caducidad" name="fecha_caducidad"
+                                            class="form-control" placeholder="dd/mm/yyyy"
+                                            oninput="validarFecha(this)"  autocomplete="nope">
+                                        <label class="floating-label" for="Fecha_caducidad">Fecha caducidad </label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="url_foto" name="url_foto" class="form-control"
+                                            placeholder="Enlace de la foto" oninput="validateURL(this)" 
+                                            autocomplete="nope">
+                                        <label class="floating-label" for="url_foto">Enlace web de la foto</label>
+
+                                        <i id="showImageIcon" class="fas fa-eye" onclick="handleImagePreview()"></i>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <button type="submit" id="submitButton" class="btnes btn-primary">Registrar</button>
+
+                                </div>
+                            </div>
+                        </form>
+
+                        <div id="message" class="message mt-3"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- jQuery (completa) y DataTables -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+        <!-- Bootstrap 5 JS (sin jQuery) -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+        <!-- DataTables Responsive JS -->
+        <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.4.0/js/responsive.bootstrap5.min.js"></script>
+
+        <!-- Scripts personalizados -->
+        <script src="/config/api.js"></script>
+        <script src="../js/producto.js"></script>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        
+    document.getElementById('productoForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        if (isEditMode) {
+            Modificar();  // Llamar a la función de modificar
+        } else {
+            Registrar();  // Llamar a la función de registrar
+
+        }
+    });
+
+    });
+
+    function resetForm() {
+
+        // Restablecer los valores de los campos de texto
+        document.getElementById('codigo_barras').value = '';
+        document.getElementById('nombre').value = '';
+        document.getElementById('descripcion').value = '';
+        document.getElementById('precio_c').value = '';
+        document.getElementById('precio_v').value = '';
+        document.getElementById('stock_minimo').value = '';
+        document.getElementById('stock_maximo').value = '';
+        document.getElementById('ubicacion').value = '';
+        document.getElementById('fecha_caducidad').value = '';
+        document.getElementById('url_foto').value = '';
+
+         // Restablecer los combo box a su primer valor
+         document.getElementById('id_categoria').selectedIndex = 0; // O usar .value = '';
+         document.getElementById('id_marca').selectedIndex = 0; // O usar .value = '';
+         document.getElementById('id_unidad').selectedIndex = 0; // O usar .value = '';
+
+        // Restablecer el color de borde de los campos
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.style.borderColor = ''; // Restablecer el color de borde a su estado original
+        });
+    
+    }
+    
+    async function Modificar(event) {
+        if (event) event.preventDefault(); // Prevenir el envío por defecto
+    
+        // Mostrar el mensaje de confirmación
+        const confirmResult = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡Se modificará la información de la marca!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, modificar',
+            cancelButtonText: 'Cancelar'
+        });
+    
+        if (!confirmResult.isConfirmed) {
+            return; // Si el usuario cancela, no hacemos nada
+        }
+    
+        // Cerrar el modal antes de proceder
+        $('#miModal').modal('hide'); // Asegúrate de que el ID del modal coincida con el que estás usando
+    
+    
+        const Id_producto = document.getElementById('id_producto').value;
+        const Codigo_barras = document.getElementById('codigo_barras').value;
+        const Id_categoria = document.getElementById('id_categoria').value;
+        const Id_marca = document.getElementById('id_marca').value;
+        const Descripcion = document.getElementById('descripcion').value;
+        const Id_unidad = document.getElementById('id_unidad').value;
+        const Nombre = document.getElementById('nombre').value;
+        const Precio_C = document.getElementById('precio_c').value;
+        const Precio_V = document.getElementById('precio_v').value;
+        const Stock_minimo = document.getElementById('stock_minimo').value;
+        const Stock_maximo = document.getElementById('stock_maximo').value;
+        const Ubicacion = document.getElementById('ubicacion').value;
+        const Fecha_caducidad = document.getElementById('fecha_caducidad').value;
+        const Url_foto = document.getElementById('url_foto').value;
+                
+        try {
+            const response = await fetch(`${apiBaseUrl}/producto/modificar/${Id_producto}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id_producto:Id_producto,
+                    codigo_barras: Codigo_barras,
+                    id_categoria: Id_categoria,
+                    id_marca: Id_marca,
+                    id_unidad: Id_unidad,
+                    nombre: Nombre,
+                    descripcion: Descripcion,
+                    precio_c: Precio_C,
+                    precio_v: Precio_V,
+                    stock_minimo: Stock_minimo,
+                    stock_maximo: Stock_maximo,
+                    ubicacion: Ubicacion,
+                    fecha_caducidad: Fecha_caducidad,
+                    url_foto: Url_foto,
+                })
+            });
+    
+            const text = await response.text(); // Leer la respuesta como texto
+            console.log('Respuesta del servidor:', text); // Imprimir la respuesta para depuración
+    
+            if (response.ok) {
+                
+                // Cerrar el modal inmediatamente
+                const modal = bootstrap.Modal.getInstance(document.getElementById('registrarProductoModal'));
+                modal.hide();
+                resetForm();
+                updateFloatingLabels(false);
+                obtenerProducto(); // Actualiza la lista después de eliminar
+                cargarSiguienteId()
+
+                const result = JSON.parse(text); // Intentar analizar el texto como JSON
+                // Mostrar mensaje de éxito después de que el modal se haya cerrado
+                Swal.fire({
+                    title: '¡Datos modificados!',
+                    text: 'La marca se modificó exitosamente.',
+                    icon: 'success',
+                    timer: 1000,               // Tiempo en milisegundos (3000 ms = 3 segundos)
+                    showConfirmButton: false    // Ocultar botón de confirmación
+                })
+
+            } else {
+                Swal.fire('Error', `Error: ${text}`, 'error');
+            }
+        } catch (error) {
+            console.error('Error al enviar la solicitud:', error);
+            Swal.fire('Error', 'Error al actualizar el producto', 'error');
+        }
+    }
+
+    async function Registrar(event) {
+        if (event) event.preventDefault(); // Prevenir el envío por defecto
+
+        const Codigo_barras = document.getElementById('codigo_barras').value;
+        const Id_categoria = document.getElementById('id_categoria').value;
+        const Id_marca = document.getElementById('id_marca').value;
+        const Descripcion = document.getElementById('descripcion').value;
+        const Id_unidad = document.getElementById('id_unidad').value;
+        const Nombre = document.getElementById('nombre').value;
+        const Precio_C = document.getElementById('precio_c').value;
+        const Precio_V = document.getElementById('precio_v').value;
+        const Stock_minimo = document.getElementById('stock_minimo').value;
+        const Stock_maximo = document.getElementById('stock_maximo').value;
+        const Ubicacion = document.getElementById('ubicacion').value;
+        const Fecha_caducidad = document.getElementById('fecha_caducidad').value;
+        const Url_foto = document.getElementById('url_foto').value;
+    
+        // Mostrar cuadro de diálogo de confirmación
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Los datos se registrarán de forma permanente.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, guardar',
+            cancelButtonText: 'Cancelar'
+    
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch(`${apiBaseUrl}/producto/registrar`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+
+                        body: JSON.stringify({
+                            codigo_barras: Codigo_barras,
+                            id_categoria: Id_categoria,
+                            id_marca: Id_marca,
+                            id_unidad: Id_unidad,
+                            nombre: Nombre,
+                            descripcion: Descripcion,
+                            precio_c: Precio_C,
+                            precio_v: Precio_V,
+                            stock_minimo: Stock_minimo,
+                            stock_maximo: Stock_maximo,
+                            ubicacion: Ubicacion,
+                            fecha_caducidad: Fecha_caducidad,
+                            url_foto: Url_foto,
+                                       
+                        })
+                    });
+    
+                    const text = await response.text(); // Leer la respuesta como texto
+                    console.log('Respuesta del servidor:', text); // Imprimir la respuesta para depuración
+    
+                    if (response.ok) {
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('registrarProductoModal'));
+                        modal.hide();
+                        resetForm();
+                        updateFloatingLabels(false);
+                        obtenerProducto(); // Actualiza la lista después de eliminar
+                        cargarSiguienteId();
+                        // Mostrar mensaje de éxito después de que el modal se haya cerrado
+                        Swal.fire({
+                            title: '¡Registros guardados!',
+                            text: 'El producto se guardó exitosamente.',
+                            icon: 'success',
+                            timer: 1000,               // Tiempo en milisegundos (3000 ms = 3 segundos)
+                            showConfirmButton: false    // Ocultar botón de confirmación
+                        })
+                    } else {
+                        Swal.fire('Error', `Error: ${text}`, 'error');
+                    }
+                } catch (error) {
+                    console.error('Error al enviar la solicitud:', error);
+                    Swal.fire('Error', 'Error al registrar el producto', 'error');
+                }
+            }
+        });
+    }
+
+    async function handleImagePreview() {
+
+        const showImageIcon = document.getElementById('showImageIcon');
+        const urlInput = document.getElementById('url_foto');
+        const imageUrl = urlInput.value.trim();
+
+        if (!imageUrl) {
+            return Swal.fire({
+                title: 'No se ha proporcionado una URL',
+                text: 'Por favor, ingresa una URL de imagen.',
+                icon: 'info',
+                confirmButtonText: 'OK'
+            });
+        }
+
+        try {
+            // Verificar si la URL es una URL válida y la imagen existe
+            const response = await fetch(imageUrl, { method: 'HEAD' });
+
+            if (!response.ok) {
+                throw new Error('La URL no es válida o la imagen no existe.');
+            }
+
+            Swal.fire({
+                title: 'Vista previa de la imagen',
+                imageUrl: imageUrl,
+                imageAlt: 'Vista previa',
+                confirmButtonText: 'Cerrar',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar'
+            });
+
+        } catch (error) {
+            Swal.fire({
+                title: 'Error al cargar la imagen',
+                text: 'No se pudo visualizar la imagen. Verifica la URL.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
+    }
+
+    function validateNumero(input) {
+        const value = input.value;
+        // Elimina caracteres no numéricos
+        const cleaned = value.replace(/[^0-9]/g, '');
+        input.value = cleaned;
+
+        // Verifica longitud
+        if (cleaned.length >= 1) {
+            input.style.borderColor = 'black'; // Color de borde para válido
+        } else {
+            input.style.borderColor = 'red'; // Color de borde para inválido
+        }
+    }
+
+    function validatePrecio(input) {
+        let value = input.value;
+    
+        // Permitir solo números y puntos
+        const cleaned = value.replace(/[^0-9.]/g, '');
+    
+        // Verificar si hay más de un punto decimal
+        const parts = cleaned.split('.');
+    
+        // Permitir solo un punto decimal
+        if (parts.length > 2) {
+            value = parts[0] + '.' + parts[1]; // Solo mantener la primera parte y un punto
+        } else {
+            value = cleaned;
+        }
+    
+        // Limitar la parte decimal a dos dígitos
+        if (value.includes('.')) {
+            const [integerPart, decimalPart] = value.split('.');
+            value = decimalPart
+                ? `${integerPart}.${decimalPart.substring(0, 2)}`
+                : integerPart + '.'; // Permitir un punto si no hay parte decimal aún
+        }
+    
+        // Actualizar el valor del campo
+        input.value = value;
+    
+        // Verificar longitud
+        if (value.length >= 1) {
+            input.style.borderColor = 'black'; // Color de borde para válido
+        } else {
+            input.style.borderColor = 'red'; // Color de borde para inválido
+        }
+    }
+    
+
+    function validateLetras(input) {
+        const value = input.value;
+        // Elimina caracteres no numéricos
+        const cleaned = value.replace(/[^a-zA-Z0-9,.\s]/g, ''); // Incluye `\s` para permitir espacios
+        input.value = cleaned;
+
+        // Verifica longitud
+        if (cleaned.length >= 1) {
+            input.style.borderColor = 'black'; // Color de borde para válido
+        } else {
+            input.style.borderColor = 'red'; // Color de borde para inválido
+        }
+    }
+
+    function validateSoloLetras(input) {
+        // Permitir solo letras (sin espacios)
+        const cleaned = value.replace(/[^a-zA-Z0-9,.\s]/g, ''); // Incluye `\s` para permitir espacios
+
+        // Actualizar el valor del campo
+        input.value = cleaned;
+
+        // Verifica longitud
+        if (cleaned.length >= 1) {
+            input.style.borderColor = 'black'; // Color de borde para válido
+        } else {
+            input.style.borderColor = 'red'; // Color de borde para inválido
+        }
+    }
+
+    function validateURL(input) {
+        const urlPattern = /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w- ;,./?%&=]*)?$/i;
+        const value = input.value.trim(); // Elimina espacios en blanco al principio y al final
+
+        // Verifica si la URL coincide con el patrón
+        if (urlPattern.test(value)) {
+            input.style.borderColor = 'black'; // Color de borde para válido
+        } else {
+            input.style.borderColor = 'red'; // Color de borde para inválido
+        }
+    }
+    
+    function formatFecha(input) {
+        let value = input.value.replace(/\D/g, ''); // Elimina todos los caracteres no numéricos
+        
+        if (value.length > 2) {
+            value = `${value.slice(0, 2)}/${value.slice(2)}`;
+        }
+        if (value.length > 5) {
+            value = `${value.slice(0, 5)}/${value.slice(5)}`;
+        }
+    
+        input.value = value;
+        validarFecha(input); // Llama a la función de validación para verificar si la fecha es válida
+    }
+    
+    function validarFecha(input) {
+        const value = input.value.trim();
+        const fechaPattern = /^(\d{2})\/(\d{2})\/(\d{4})$/; // Expresión regular para el formato dd/mm/yyyy
+        const matches = fechaPattern.exec(value);
+    
+        if (matches) {
+            const [_, day, month, year] = matches;
+            const dayNumber = parseInt(day, 10);
+            const monthNumber = parseInt(month, 10);
+            const yearNumber = parseInt(year, 10);
+    
+            // Validar el rango del mes (1-12)
+            const isMonthValid = monthNumber >= 1 && monthNumber <= 12;
+            // Validar el rango del día según el mes
+            const daysInMonth = [31, (isLeapYear(yearNumber) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            const isDayValid = dayNumber >= 1 && dayNumber <= daysInMonth[monthNumber - 1];
+    
+            if (isMonthValid && isDayValid) {
+                input.style.borderColor = 'black'; // Color de borde para válido
+            } else {
+                input.style.borderColor = 'red'; // Color de borde para inválido
+            }
+        } else {
+            input.style.borderColor = 'red'; // Color de borde para inválido
+        }
+    }
+    
+    function isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+    }
+
+    function generarCodigoBarras() {
+
+        const input = document.getElementById('codigo_barras');
+        
+        // Genera un número aleatorio de 12 dígitos (EAN-13 sin el dígito de control)
+        let codigoAleatorio = '';
+        for (let i = 0; i < 12; i++) {
+            codigoAleatorio += Math.floor(Math.random() * 10);
+        }
+    
+        input.value = codigoAleatorio;
+        input.style.borderColor = 'black'; // Color de borde para válido
+
+    }
+    
+    function validarSelect(select) {
+
+
+        // Obtiene el valor seleccionado
+        const value = select.value;
+
+        // Valida que se haya seleccionado una opción válida (no el valor predeterminado)
+        const isValid = value !== "";
+
+        // Cambia el borde del campo en función de la validez
+        if (isValid) {
+            select.style.borderColor = 'black'; // Color de borde para selección válida
+        } else {
+            select.style.borderColor = 'red'; // Color de borde para selección inválida
+        }
+
+        return isValid;
+    }
+
+</script>

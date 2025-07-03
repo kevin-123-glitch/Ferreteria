@@ -1,0 +1,350 @@
+
+/*************************************************************************************************/
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    #diseñoTable1 thead th, #diseñoTable1 tbody td {
+        font-size: 0.75rem; /* Tamaño de fuente más pequeño */
+        padding: 0.5rem; /* Espaciado interno reducido */
+    }
+    .search-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        /* Espacio entre el texto y el campo de búsqueda */
+    }
+    .title {
+        font-family: 'Merriweather', serif; /* Aplica la fuente Merriweather */
+        font-weight: 100; /* Ajusta el grosor de la fuente */
+        margin: 0 0 10px 0; /* Espacio debajo del título */
+        text-align: left; /* Alinea el texto a la izquierda */
+        font-size: 1.5rem; /* Tamaño de la fuente */
+        letter-spacing: 0.05em; /* Espaciado entre letras opcional */
+    }
+
+}
+
+/* Centra el texto en los encabezados de la tabla */
+#diseñoTable1 thead th {
+text-align: center; /* Centra el texto en los encabezados */
+}
+
+.table-responsive {
+width: 100%; /* Asegura que el contenedor ocupe el 100% del ancho */
+overflow-x: auto; /* Permite el desplazamiento horizontal si es necesario */
+margin-bottom: 1rem; /* Espacio debajo de la tabla */
+}
+
+
+
+.table-responsive::-webkit-scrollbar-track {
+background: rgb(255, 255, 255); /* Color del track (parte de la scrollbar que no se mueve) */
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+background: rgb(252, 252, 252); /* Color del "thumb" (parte movible de la scrollbar) */
+border-radius: 1px; /* Opcional: borde redondeado del thumb */
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+background: rgba(246, 245, 245, 0.7); /* Color del thumb al pasar el mouse por encima */
+}
+
+
+/* Estilo para la tabla */
+#diseñoTable1 {
+width: 100%;
+border-collapse: collapse;
+/* Elimina los espacios entre celdas */
+font-size: 0.8rem;
+/* Tamaño de fuente más pequeño */
+text-align: center;
+/* Centra el texto en todas las celdas */
+white-space: nowrap; /* Evita saltos de línea en celdas */
+
+}
+
+/* Encabezado de la tabla */
+#diseñoTable1 thead th {
+background-color: rgb(53, 179, 78);
+/* Fondo celeste para el encabezado */
+color: #fff;
+/* Color de texto blanco */
+font-weight: bold;
+/* Texto en negrita */
+padding: 5px;
+/* Espaciado interno */
+}
+
+/* Estilos para las filas pares e impares */
+#diseñoTable1 tbody tr.even {
+background-color: #fdfcfc !important;
+color: #070707; /* Asegúrate de que el texto sea legible sobre el fondo de hover */
+
+}
+
+#diseñoTable1 tbody tr.odd {
+background-color: #f3f1f1 !important;
+color: #070707; /* Asegúrate de que el texto sea legible sobre el fondo de hover */
+
+}
+
+#diseñoTable1 tbody td {
+border: none; /* Elimina los bordes laterales y superiores */
+padding: 1px; /* Espaciado interno de las celdas */
+border-bottom: 1px solid #c9c9c9; /* Solo borde inferior de las celdas */
+text-align: center; /* Alineación horizontal al centro */
+vertical-align: middle; /* Alineación vertical al centro */
+}
+
+/* Hover effect para filas */
+#diseñoTable1 tbody tr:hover {
+background-color: #e1e0e0 !important;
+color: #060606; /* Asegúrate de que el texto sea legible sobre el fondo de hover */
+}
+
+/*************************************************************************************************
+
+/* Estilos para los botones de acción */
+#diseñoTable1 tbody td button {
+margin: 0;
+border: none;
+background: none;
+cursor: pointer;
+}
+
+/* Estilos para los íconos */
+#diseñoTable1 tbody td button i {
+font-size: 1rem; /* Ajusta el tamaño de los íconos */
+}
+
+
+
+/* Color específico para el ícono de eliminar */
+.delete-btn i {
+color: #dd1d1d; /* Color blanco para el ícono */
+}
+
+
+
+/* Animación de parpadeo para activo */
+@keyframes blink {
+0% { opacity: 1; }
+50% { opacity: 0; }
+100% { opacity: 1; }
+}
+
+
+/*************************************************************************************************/
+
+
+.pagination {
+/* Espaciado interno horizontal de los elementos de paginación */
+--bs-pagination-padding-x: 0.75rem;
+
+/* Espaciado interno vertical de los elementos de paginación */
+--bs-pagination-padding-y: 0.375rem;
+
+/* Tamaño de fuente de los elementos de paginación */
+--bs-pagination-font-size: 1rem;
+
+/* Color del texto de los elementos de paginación */
+--bs-pagination-color: #010101;
+
+/* Fondo de los elementos de paginación */
+--bs-pagination-bg: var(--bs-body-bg);
+
+/* Ancho del borde de los elementos de paginación */
+--bs-pagination-border-width: var(--bs-border-width);
+
+/* Color del borde de los elementos de paginación */
+--bs-pagination-border-color: #dee2e600;
+
+/* Radio del borde de los elementos de paginación */
+--bs-pagination-border-radius: var(--bs-border-radius);
+
+/* Fondo cuando se pasa el ratón sobre los elementos de paginación */
+--bs-pagination-hover-bg: var(--bs-tertiary-bg);
+
+/* Color del borde cuando se pasa el ratón sobre los elementos de paginación */
+--bs-pagination-hover-border-color: var(--bs-border-color);
+
+/* Color del texto cuando los elementos de paginación están enfocados */
+--bs-pagination-focus-color: #928e8e;
+/* Fondo cuando los elementos de paginación están enfocados */
+--bs-pagination-focus-bg: var(--bs-secondary-bg);
+
+/* Sombra del borde cuando los elementos de paginación están enfocados */
+--bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(104, 105, 106, 0.25);
+
+/* Color del texto para el botón activo de paginación */
+--bs-pagination-active-color: #000000;
+
+/* Fondo para el botón activo de paginación */
+--bs-pagination-active-bg: #ebedf0;
+
+/* Color del borde para el botón activo de paginación */
+--bs-pagination-active-border-color: #ebedf0;
+
+/* Color del texto para el botón de paginación deshabilitado */
+--bs-pagination-disabled-color: var(--bs-secondary-color);
+
+/* Fondo para el botón de paginación deshabilitado */
+--bs-pagination-disabled-bg: #e9ecef00;
+
+/* Color del borde para el botón de paginación deshabilitado */
+--bs-pagination-disabled-border-color: #dee2e600;
+
+/* Alineación y disposición de los elementos de paginación */
+display: flex;
+
+/* Espaciado interno izquierdo del contenedor de paginación */
+padding-left: 0;
+
+/* Eliminación de los estilos de lista por defecto */
+list-style: none;
+list-style-position: initial;
+list-style-image: initial;
+list-style-type: none;
+
+font-size: 14px; /* Tamaño de la fuente del selector */
+font-family: Arial, sans-serif; /* Familia de fuentes para el selector */
+}
+.pagination .page-link:hover {
+color: #fafafa;
+background-color:  #17a2b8;
+border-color:#17a2b8;
+font-size: 14px; /* Tamaño de la fuente del selector */
+font-family: Arial, sans-serif; /* Familia de fuentes para el selector */
+}
+
+.pagination .page-link:focus, 
+.pagination .page-link:active {
+box-shadow: none; /* Elimina el efecto de sombra alrededor del botón cuando está enfocado o activo */
+border-color: transparent; /* Elimina el borde cuando está enfocado o activo */
+background-color: #eceaea; /* Fondo del botón sin cambios */
+color: #010101; /* Color del texto sin cambios */
+font-size: 14px !important;; /* Tamaño de la fuente del selector */
+font-family: Arial, sans-serif; /* Familia de fuentes para el selector */
+}
+
+
+
+/* Personalizar el tamaño de las letras del selector */
+.dataTables_length select {
+font-size: 14px !important;; /* Tamaño de la fuente del selector */
+color: #333; /* Color de la fuente del selector */
+font-family: Arial, sans-serif; /* Familia de fuentes para el selector */
+}
+
+/* Personalizar el tamaño de las letras en el texto que acompaña al selector */
+.dataTables_length label {
+font-size: 14px !important;; /* Tamaño de la fuente del selector */
+color: #333; /* Color de la fuente del texto */
+font-family: Arial, sans-serif; /* Familia de fuentes para el texto */
+}
+
+/*************************************************************************************************/
+
+/* Ocultar el filtro de búsqueda en DataTables */
+div.dataTables_wrapper div.dataTables_filter {
+/*display: none; Oculta el filtro de búsqueda */
+margin-right: 0.1rem; /* Espacio entre los elementos */
+
+}
+
+
+
+/* Ajustar el tamaño de las letras del resto de la tabla */
+.dataTables_wrapper .dataTables_info, 
+.dataTables_wrapper .dataTables_paginate {
+font-size: 14px; /* Tamaño de la fuente de la información y la paginación */
+color: #333; /* Color de la fuente */
+font-family: Arial, sans-serif; /* Familia de fuentes */
+}
+
+
+/* Estilo del texto que acompaña al combo box */
+.dataTables_length label {
+font-size: 14px; /* Tamaño de la fuente del texto */
+color: #333; /* Color de la fuente del texto */
+font-family: Arial, sans-serif; /* Familia de fuentes del texto */
+margin-right: 10px; /* Espacio a la derecha del texto */
+}
+
+
+/*************************************************************************************************/
+
+
+
+
+
+/* Ocultar columnas en dispositivos móviles */
+/* Ocultar columnas en dispositivos móviles */
+@media (max-width: 767px) {
+.hide-mobile {
+display: none !important;
+
+}
+.hide-computer {
+display: none !important;
+}
+
+#diseñoTable1 {
+width: 100% !important;
+}
+
+/* Tamaño de fuente para la paginación en dispositivos móviles */
+.pagination .page-link {
+font-size: 13px; /* Tamaño de fuente más pequeño para dispositivos móviles */
+}
+
+.pagination .page-link:hover {
+font-size: 13px; /* Tamaño de fuente en estado hover para dispositivos móviles */
+}
+
+.pagination .page-link:focus,
+.pagination .page-link:active {
+font-size: 13px !important; /* Tamaño de fuente en estado enfocado o activo para dispositivos móviles */
+}
+
+.dataTables_length select {
+font-size: 13px !important; /* Tamaño de fuente para el selector en dispositivos móviles */
+}
+
+.dataTables_length label {
+font-size: 13px !important; /* Tamaño de fuente para el texto que acompaña al selector en dispositivos móviles */
+}
+
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+font-size: 13px; /* Tamaño de fuente para la información y la paginación en dispositivos móviles */
+}
+.search-container {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+/* Espacio entre el texto y el campo de búsqueda */
+}
+.search-container label {
+margin-bottom: 0;
+/* Elimina el margen inferior del label */
+font-size: 0.9rem;
+/* Tamaño del ícono */
+
+}
+
+}
+
+
+
+/* Ocultar columnas solo en vistas de escritorio */
+@media (min-width: 769px) {
+.hide-computer {
+display: none !important;
+}
+#diseñoTable1 {
+width: 100% !important;
+}
+}
+
+

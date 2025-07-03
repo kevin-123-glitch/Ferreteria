@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Admin Dashboard</title>
+    <!-- Carga de Font Awesome desde CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css">
+
+    <!-- Estilos adicionales -->
+    <link rel="stylesheet" href="../css/menu.css"> <!-- Enlaza el archivo CSS global -->
+
+    <style>
+        .navbar-title {
+            font-family: 'Merriweather', serif;
+            /* Aplica la fuente Merriweather */
+            font-weight: 100;
+            /* Ajusta el grosor de la fuente */
+            margin: 8px 0 10px 0;
+            /* Espacio debajo del título */
+            text-align: left;
+            /* Alinea el texto a la izquierda */
+            font-size: 1.5rem;
+            /* Tamaño de la fuente */
+            letter-spacing: 0.05em;
+            /* Espaciado entre letras opcional */
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <aside id="sidebar" class="js-sidebar">
+            <div class="h-100">
+                <hr class="divider">
+                <hr class="divider">
+
+                <div class="sidebar-logo">
+                    <div class="logo-container">
+                        <img id="profile-img" src="" alt="Profile Image" class="logo-img">
+                        <span id="logo-text" class="logo-text">Nombre del Usuario</span>
+                        <div class="online-status">
+                            <i class="fas fa-circle status-icon"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <ul class="sidebar-nav">
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link" data-content="tablero.html">
+                            <i class="fas fa-tachometer-alt pe-2"></i>
+                            Tablero principal
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link" data-bs-target="#personal" data-content="personal.html">
+                            <i class="fa-solid fas fa-users pe-2"></i>
+                            Personal
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link" data-bs-target="#cliente" data-content="cliente.html">
+                            <i class="fa-solid fas fa-id-card pe-2"></i>
+                            Cliente
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link" data-bs-target="#proveedor" data-content="proveedor.html">
+                            <i class="fa-solid fa-truck-fast pe-2"></i>
+                            Proveedor
+                        </a>
+                    </li>
+               
+
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#producto" data-bs-toggle="collapse"
+                            aria-expanded="false">
+                            <i class="fa-solid fas fa-box-open pe-2"></i>
+                            Productos
+                        </a>
+                        <ul id="producto" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link" data-bs-target="#articulo"
+                                    data-content="producto.html">
+                                    <i class="far fa-circle nav-icon pe-2"></i>
+                                    Articulos
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link" data-bs-target="#categoria"
+                                    data-content="categoria.html">
+                                    <i class="far fa-circle nav-icon pe-2"></i>
+                                    Categorias
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link" data-bs-target="#marca" data-content="marca.html">
+                                    <i class="far fa-circle nav-icon pe-2"></i>
+                                    Marcas
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link" data-bs-target="#unidad" data-content="unidad.html">
+                                    <i class="far fa-circle nav-icon pe-2"></i>
+                                    Unidad de medidas
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-item"></li>
+                    <a href="#" class="sidebar-link collapsed" data-bs-target="#Entradas" data-bs-toggle="collapse"
+                        aria-expanded="false">
+                        <i class="fa-solid fas fa-cart-plus pe-2"></i>
+                        Compras
+                    </a>
+                    <ul id="Entradas" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" data-content="compras.html">
+                                <i class="far fa-circle nav-icon pe-2"></i>
+                                Entrada de productos
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" data-bs-target="#detallesC"
+                                data-content="detallesCompras.html">
+                                <i class="far fa-circle nav-icon pe-2"></i>
+                                Detalles de compras
+                            </a>
+                        </li>
+                    </ul>
+                    </li>
+
+
+                    <li class="sidebar-item"></li>
+                    <a href="#" class="sidebar-link collapsed" data-bs-target="#Salidas" data-bs-toggle="collapse"
+                        aria-expanded="false">
+                        <i class="fa-solid fas fa-cash-register pe-2"></i>
+                        Ventas
+                    </a>
+                    <ul id="Salidas" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" data-content="ventas.html">
+                                <i class="far fa-circle nav-icon pe-2"></i>
+                                Punto de venta
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" data-bs-target="#detallesV"
+                                data-content="detallesVentas.html">
+                                <i class="far fa-circle nav-icon pe-2"></i>
+                                Detalles de ventas
+                            </a>
+                        </li>
+
+                    </ul>
+                    </li>
+
+
+                </ul>
+            </div>
+        </aside>
+
+        <div class="main">
+            <nav class="navbar navbar-expand px-3 border-bottom">
+                <button class="btn" id="sidebar-toggle" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <span id="navbar-title" class="navbar-title">Tablero principal</span>
+
+                <div class="ms-auto d-flex align-items-center">
+                    <button class="btn ms-3" type="button" id="notifications-btn">
+                        <i class="fas fa-bell" id="iconoNotificaciones"></i>
+                        <span id="lbl_contador" class="badge bg-danger" style="display: none;"></span>
+                    </button>
+
+                    <div id="contenidoNotificaciones" class="dropdown-menu" style="display: none;">
+                        <!-- Las notificaciones se agregarán aquí dinámicamente -->
+                    </div>
+
+
+                    <button class="btn ms-3" type="button" id="profile-btn">
+                        <i class="fas fa-user"></i>
+                    </button>
+                </div>
+            </nav>
+
+            <main class="content px-3 py-2">
+                <iframe id="contentFrame" src="" style="width:100%; height:100%; border:none;"></iframe>
+            </main>
+        </div>
+    </div>
+
+    <div id="notification-container" class="notification-container" style="display: none;">
+        <div class="notification-card">
+            <div class="card-header">
+                <div class="card-image">
+                    <img id="card-img" alt="Imagen de perfil" class="card-img">
+                </div>
+                <div class="card-info">
+                    <div id="card-name" class="card-name">Nombre del Usuario</div>
+                </div>
+            </div>
+            <button class="card-button" id="logoutButton">Cerrar sesión</button>
+        </div>
+    </div>
+    <script src="/config/api.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const user = JSON.parse(sessionStorage.getItem('user'));
+
+            if (!user) {
+                // Si no hay sesión activa, redirige al login
+                window.location.href = "loguin.html";
+                return;
+            }
+            const sidebarToggle = document.querySelector("#sidebar-toggle");
+            const sidebar = document.querySelector("#sidebar");
+            const notificationsBtn = document.getElementById('notifications-btn');
+            const notificationContainer = document.getElementById('contenidoNotificaciones');
+            const profileBtn = document.getElementById('profile-btn');
+            const profileContainer = document.getElementById('notification-container');
+            const contentFrame = document.querySelector("#contentFrame");
+            const profileImg = document.getElementById('profile-img');
+            const logoText = document.getElementById('logo-text');
+            const cardName = document.getElementById('card-name');
+            const cardImg = document.getElementById('card-img');
+            const navbarTitle = document.getElementById('navbar-title');
+            const logoutButton = document.getElementById('logoutButton');
+            const noTitleIds = ["#personal", "#cliente", "#proveedor", "#producto","#articulo",
+                "#categoria", "#marca", "#unidad", "#Entradas", "#Salidas", "#detallesC", "#detallesV"];
+            let previousTitle = ''; // Variable para almacenar el título anterior
+            const defaultPage = 'tablero.html'; // URL de la página por defecto
+            contentFrame.src = defaultPage;
+
+            // Toggle sidebar visibility
+            sidebarToggle.addEventListener("click", function () {
+                sidebar.classList.toggle("collapsed");
+            });
+
+            // Handle sidebar link activation and update navbar title
+            document.querySelectorAll('a.sidebar-link').forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault(); // Evitar que se cargue la página
+
+                    // Obtener URL del contenido y el texto del enlace
+                    const contentUrl = this.getAttribute('data-content');
+                    const linkText = this.textContent.trim();
+
+                    // Cargar contenido en el iframe si se proporciona URL
+                    if (contentUrl) {
+                        contentFrame.src = contentUrl; // Cargar contenido en el iframe
+                    }
+
+                    // Obtener el valor de data-bs-target del enlace
+                    const dataTarget = this.getAttribute('data-bs-target');
+
+                    // Actualizar el título de la barra de navegación solo si el data-bs-target no está en la lista
+                    if (dataTarget && noTitleIds.includes(dataTarget)) {
+                        navbarTitle.textContent = ""; // Restablecer al título anterior
+                    } else {
+                        previousTitle = linkText; // Almacenar el título actual
+                        navbarTitle.textContent = linkText; // De lo contrario, actualizar con el texto del enlace
+                    }
+
+                    // Agregar la clase 'active' al enlace clicado y eliminar de otros
+                    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Ocultar sidebar al hacer clic en un enlace
+                    sidebar.classList.remove("collapsed");
+                });
+            });
+
+            // Ocultar sidebar al hacer clic fuera de él
+            document.addEventListener("click", function (event) {
+                if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
+                    sidebar.classList.remove("collapsed");
+                }
+            });
+
+            // Ocultar sidebar al hacer clic en el contenido del iframe
+            contentFrame.addEventListener("load", function () {
+                const iframeDocument = contentFrame.contentDocument || contentFrame.contentWindow.document;
+
+                // Escuchar clicks en el documento del iframe
+                iframeDocument.addEventListener("click", function () {
+                    sidebar.classList.remove("collapsed");
+                });
+            });
+
+            // Handle sub-menu link activation
+            document.querySelectorAll('.sidebar-dropdown .sidebar-link').forEach(link => {
+                link.addEventListener('click', function () {
+                    document.querySelectorAll('.sidebar-dropdown .sidebar-link').forEach(link => link.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Function to update notifications
+            function actualizarNotificaciones() {
+                fetch(`${apiBaseUrl}/producto/low-stock`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const contenidoNotificaciones = document.querySelector("#contenidoNotificaciones");
+                        const lblContador = document.querySelector("#lbl_contador");
+                        contenidoNotificaciones.innerHTML = '';
+                        lblContador.style.display = 'none';
+
+                        if (data.length > 0) {
+                            lblContador.textContent = data.length;
+                            lblContador.style.display = 'inline';
+                            data.forEach(producto => {
+                                const item = document.createElement('a');
+                                item.href = '#';
+                                item.classList.add('elemento-menu-desplegable');
+                                item.innerHTML = `
+                                    <div class="media d-flex align-items-center">
+                                        <img src="${producto.Url_foto}" alt="${producto.Nombre}" class="img-thumbnail" style="object-fit: cover;">
+                                        <div class="cuerpo-media">
+                                            <h3 class="dropdown-item-title">${producto.Nombre}</h3>
+                                            <div class="notificacion-detalles">
+                                                <p class="text-sm">Código: ${producto.Codigo_barras}</p>
+                                            </div>
+                                            <div class="notificacion-detalles">
+                                                <p class="text-sm text-danger">Stock actual: ${producto.Stock}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                                contenidoNotificaciones.appendChild(item);
+                            });
+                        }
+                    });
+            }
+
+            // Initial notification load
+            actualizarNotificaciones();
+
+            // Update notifications every 3 seconds
+            setInterval(actualizarNotificaciones, 3000);
+
+            // Toggle notifications container visibility
+            notificationsBtn.addEventListener("click", function () {
+                const isVisible = notificationContainer.style.display === 'block';
+                if (profileContainer.style.display === 'block') {
+                    profileContainer.style.display = 'none';
+                }
+                notificationContainer.style.display = isVisible ? 'none' : 'block';
+            });
+
+            // Toggle profile container visibility
+            profileBtn.addEventListener("click", function () {
+                const isVisible = profileContainer.style.display === 'block';
+                if (notificationContainer.style.display === 'block') {
+                    notificationContainer.style.display = 'none';
+                }
+                profileContainer.style.display = isVisible ? 'none' : 'block';
+            });
+
+
+
+            // Update profile info with sessionStorage data
+ 
+            if (user) {
+                const defaultImageUrl = 'https://i.postimg.cc/Sx05THst/sin-foto.png'; // URL de la imagen por defecto
+
+                profileImg.src = user.Foto || defaultImageUrl;
+                logoText.textContent = `${user.Nombre} ${user.Apellido}`;
+                cardName.textContent = `${user.Nombre} ${user.Apellido}`;
+                cardImg.src = user.Foto || defaultImageUrl;
+                // Convert text to voice
+                const fullName = `${user.Nombre} ${user.Apellido}`;
+                // speakText(`Bienvenido ${fullName}`);
+            }
+        });
+
+        // Función para cambiar el estado del usuario
+        async function cambiarEstadoUsuario() {
+
+            const user = JSON.parse(sessionStorage.getItem('user'));
+            const idPersonal = `${user.idPersonal}`;
+
+            try {
+                const response = await fetch(`${apiBaseUrl}/loguin/cambiarEstadoUsuario`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        idPersonal: idPersonal // ID del usuario que deseas actualizar
+                    })
+                });
+
+                const data = await response.json();
+                document.getElementById('mensaje').textContent = data.message; // Muestra el mensaje de respuesta
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('mensaje').textContent = 'Ocurrió un error al cambiar el estado.';
+            }
+        }
+
+
+        // Handle logout
+        logoutButton.addEventListener('click', function () {
+
+            cambiarEstadoUsuario();
+
+            fetch(`${apiBaseUrl}/loguin/logout`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Limpiar almacenamiento de sesión
+                        sessionStorage.clear();
+                        localStorage.clear();
+                        // Redirigir al usuario a la página de inicio de sesión
+                        window.location.href = 'loguin.html';
+                        window.history.replaceState(null, '', 'loguin.html');
+
+                    } else {
+                        return response.text().then(text => alert(text));
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+
+    </script>
+</body>
+
+</html>

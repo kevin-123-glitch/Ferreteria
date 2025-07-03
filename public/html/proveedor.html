@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap5.min.css" />
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="../css/interfaces.css"> <!-- Enlaza el archivo CSS global -->
+    <link rel="stylesheet" href="../css/modal.css"> <!-- Enlaza el archivo CSS global -->
+
+
+    <!-- Excel y PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.6.0/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-invoice-template@latest/dist/index.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<style>
+  
+</style>
+
+<body>
+
+    <div class="content-wrapper">
+        <div class="card-header" style="margin-bottom: 8px;">
+            <h3 class="card-title">Listado de los Proveedores</h3>
+        </div>
+        <div class="custom-container">
+            <div class="header-container">
+
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="dt-buttons">
+
+                    <button id="buttons-excel" class="dt-button buttons-excel buttons-html5" tabindex="0"
+                        aria-controls="diseñoTable" type="button" title="Exportar a Excel">
+                        <img src="../images/xls.png" alt="Exportar a Excel" class="icon-image">
+                    </button>
+
+                    <button id="exportToPDF" class="dt-button buttons-pdf buttons-html5" tabindex="0"
+                        aria-controls="diseñoTable" type="button" title="Exportar a PDF">
+                        <img src="../images/pdf.png" alt="Exportar a PDF" class="icon-image">
+                    </button>
+                </div>
+                <div class="search-container">
+                    <label for="search-input" class="form-label">Buscar:</label>
+                    <input type="search" id="search-input" class="form-control" placeholder=""
+                        aria-controls="diseñoTable">
+
+                    <!-- Botón para abrir el modal de registro -->
+                    <button id="Nuevo" class="dt-button buttons-Nuevo buttons-html5" type="button"
+                        title="Nuevo registro" onclick="abrirModalRegistrar()">
+                        <img src="../images/proveedor+.png" alt="Realizar nuevo registro" class="icon-image">
+                    </button>
+
+                </div>
+            </div>
+            <hr class="divider">
+            <div class="table-responsive ">
+                <table id="diseñoTable">
+                    <thead>
+                        <tr>
+                            <th class="hide-computer">ID</th>
+                            <th>Tipo</th>
+                            <th>Documento</th>
+                            <th>Empresa</th>
+                            <th class="hide-mobile">Contacto</th>
+                            <th class="hide-mobile">Teléfono</th>
+                            <th class="hide-mobile">Direccion</th>
+                            <th class="hide-mobile">Provincia</th>
+                            <th class="hide-mobile">Distrito</th>
+                            <th class="hide-computer">Correo</th>
+                            <th class="hide-mobile">Rubro</th>
+                            <th>Acciones</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Las filas se llenarán dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="registrarProveedorModal" enctype="multipart/form-data tabindex=" role="dialog"
+            aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog custom-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Registrar datos del Proveedor</h5>
+                        <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                            <img src="../images/close-button.png" alt="Close" class="img-close" onclick="resetForm()">
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form id="proveedorForm">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="floating-label-select-group">
+                                        <select id="ID_Tipo_Doc" name="ID_Tipo_Doc" class="form-control" required
+                                            onchange="validarSelect(this)">
+                                            <option value="" disabled selected class="default-option">Tipo de Documento
+                                            </option>
+                                            <!-- Agregar opciones de perfil aquí -->
+                                        </select>
+                                        <label class="floating-label" for="ID_Tipo_Doc ">Tipo de Documento</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="numero_documento" name="numero_documento"
+                                            class="form-control" placeholder="Número de documento"
+                                            oninput="validarNumero(this)" autocomplete="nope" required>
+                                        <label class="floating-label" for="numero_documento">Número de documento</label>
+                                        <i class="fas fa-search position-absolute"
+                                            style="top: 50%; transform: translateY(-50%); "
+                                            onclick="consultarDocumento()"></i>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="nombre" name="nombre" class="form-control"
+                                            placeholder="Nombre/o Empresa " oninput="validarLetras(this)" required
+                                            autocomplete="nope">
+                                        <label class="floating-label" for="Nombre">Nombre/o Empresa</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="contacto" name="contacto" class="form-control"
+                                            placeholder="Contacto" oninput="validarLetras(this)" autocomplete="nope">
+                                        <label class="floating-label" for="contacto">Nombre del Contacto</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="telefono" name="telefono" class="form-control"
+                                            placeholder="Teléfono" oninput="validarTelefono(this)" autocomplete="nope">
+                                        <label class="floating-label" for="telefono">Teléfono</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="direccion" name="direccion" class="form-control"
+                                            placeholder="Dirección" oninput="validarCampovacios(this)" autocomplete="nope">
+                                        <label class="floating-label" for="direccion">Dirección</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="provincia" name="provincia" class="form-control"
+                                            placeholder="Provincia" oninput="validarLetras(this)" autocomplete="nope">
+                                        <label class="floating-label" for="provincia">Provincia</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="distrito" name="distrito" class="form-control"
+                                            placeholder="Distrito" oninput="validarLetras(this)" autocomplete="nope">
+                                        <label class="floating-label" for="distrito">Distrito</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="email" id="correo" name="correo" class="form-control"
+                                            placeholder="Correo electrónico" oninput="validarCorreo(this)"
+                                            autocomplete="nope">
+                                        <label class="floating-label" for="correo">Correo electrónico</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="floating-label-group">
+                                        <input type="text" id="rubro" name="rubro" class="form-control"
+                                            placeholder="Rubro" oninput="validarLetras(this)" autocomplete="nope">
+                                        <label class="floating-label" for="rubro">Rubro del proveedor</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <button type="submit" id="submitButton" class="btnes btn-primary">Registrar</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div id="message" class="message mt-3"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!-- jQuery (completa) y DataTables -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+        <!-- Bootstrap 5 JS (sin jQuery) -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+        <!-- DataTables Responsive JS -->
+        <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.4.0/js/responsive.bootstrap5.min.js"></script>
+
+        <!-- Scripts personalizados -->
+        <script src="/config/api.js"></script>
+        <script src="../js/proveedor.js"></script>
+    </div>
+
+</body>
+
+</html>
+
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+
+        loadDocIdent();
+
+
+        document.getElementById('proveedorForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            if (isEditMode) {
+                Modificar();  // Llamar a la función de modificar
+            } else {
+                Registrar();  // Llamar a la función de registrar
+
+            }
+        });
+
+
+
+    });
+
+
+
+
+    async function consultarDocumento() {
+        const tipoDocumento = document.getElementById('ID_Tipo_Doc').value;
+        const numeroDocumento = document.getElementById('numero_documento').value;
+
+        // Validar que se haya seleccionado un tipo de documento
+        const isTypeSelected = validarTipoDocumento(tipoDocumento);
+        if (!isTypeSelected) return;
+
+        // Validar número de documento según el tipo seleccionado
+        const isValid = validarDocumento(tipoDocumento, numeroDocumento);
+        if (!isValid) return;
+
+        let url = obtenerURL(tipoDocumento, numeroDocumento);
+        if (!url) return;
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer e42ebd0a0971977dd9bd6f843f3599bad83ed5c67758f6dcb8871a3af32a1186'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error al consultar el ${tipoDocumento.toUpperCase()}`);
+            }
+
+            const data = await response.json();
+            if (data.success) {
+
+                llenarDatos(data.data, tipoDocumento);
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message,
+            });
+        }
+    }
+
+    function validarTipoDocumento(tipoDocumento) {
+        const select = document.getElementById('ID_Tipo_Doc');
+        const isSelectValid = tipoDocumento !== "";
+        select.style.borderColor = isSelectValid ? 'black' : 'red';
+
+        if (!isSelectValid) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Advertencia',
+                text: "Por favor, selecciona un tipo de documento.",
+            });
+        }
+
+        return isSelectValid;
+    }
+
+    function validarDocumento(tipoDocumento, numeroDocumento) {
+        let isValid = true;
+
+        if (tipoDocumento === "1" && numeroDocumento.length !== 8) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Advertencia',
+                text: "El DNI debe tener 8 dígitos.",
+            });
+            isValid = false;
+        } else if (tipoDocumento === "4" && numeroDocumento.length !== 11) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Advertencia',
+                text: "El RUC debe tener 11 dígitos.",
+            });
+            isValid = false;
+        } else if (numeroDocumento.trim() === "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Advertencia',
+                text: "El número de documento no puede estar vacío.",
+            });
+            isValid = false;
+        }
+
+        const numeroInput = document.getElementById('numero_documento');
+        numeroInput.style.borderColor = isValid ? 'black' : 'red';
+
+        return isValid;
+    }
+
+    // Las funciones obtenerURL y llenarDatos permanecen sin cambios
+
+    function obtenerURL(tipoDocumento, numeroDocumento) {
+        if (tipoDocumento === "1") {
+            return `https://apiperu.dev/api/dni/${numeroDocumento}`;
+        } else if (tipoDocumento === "4") {
+            return `https://apiperu.dev/api/ruc/${numeroDocumento}`;
+        }
+        return null;
+    }
+
+    function capitalizeWords(str) {
+        return str
+            .toLowerCase() // Convertir todo a minúsculas primero
+            .replace(/(?:^|\s|["'([{])+\S/g, function(char) {
+                return char.toUpperCase(); // Capitaliza la primera letra después de un espacio
+            });
+    }
+    
+    
+    function llenarDatos(info, tipoDocumento) {
+    
+
+        if (tipoDocumento === "1") {
+            
+            document.getElementById("nombre").style.border = "1px solid black";
+            
+            document.getElementById('nombre').value = capitalizeWords(info.nombre_completo);
+            document.getElementById('direccion').value = info.direccion ? capitalizeWords(info.direccion) : "";
+            document.getElementById('provincia').value = info.ubigeo[1] ? capitalizeWords(info.ubigeo[1]) : "";
+            document.getElementById('distrito').value = info.ubigeo[2] ? capitalizeWords(info.ubigeo[2]) : "";
+
+        } else if (tipoDocumento === "4") {
+
+            document.getElementById("nombre").style.border = "1px solid black";
+            document.getElementById("direccion").style.border = "1px solid black";
+            document.getElementById("provincia").style.border = "1px solid black";
+            document.getElementById("distrito").style.border = "1px solid black";
+
+            document.getElementById('nombre').value = capitalizeWords(info.nombre_o_razon_social);
+            document.getElementById('direccion').value = info.direccion ? capitalizeWords(info.direccion) : "";
+            document.getElementById('provincia').value = info.provincia ? capitalizeWords(info.provincia) : "";
+            document.getElementById('distrito').value = info.distrito ? capitalizeWords(info.distrito) : "";
+        }
+    }
+
+
+
+
+    async function Registrar(event) {
+        if (event) event.preventDefault(); // Prevenir el envío por defecto
+
+
+        // Obtener valores de los campos del formulario
+
+        const ID_Tipo_Doc = document.getElementById('ID_Tipo_Doc').value;
+        const Numero_documento = document.getElementById('numero_documento').value;
+        const Nombre = document.getElementById('nombre').value;
+        const Contacto = document.getElementById('contacto').value;
+        const Telefono = document.getElementById('telefono').value;
+        const Direccion = document.getElementById('direccion').value;
+        const Provincia = document.getElementById('provincia').value;
+        const Distrito = document.getElementById('distrito').value;
+        const Correo = document.getElementById('correo').value;
+        const Rubro = document.getElementById('rubro').value;
+
+
+        // Mostrar cuadro de diálogo de confirmación
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Los datos se registrarán de forma permanente.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, guardar',
+            cancelButtonText: 'Cancelar'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch(`${apiBaseUrl}/proveedor/registrar`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            Id_tdoc_proveedor: ID_Tipo_Doc,
+                            numero_documento: Numero_documento,
+                            nombre: Nombre,
+                            contacto: Contacto,
+                            telefono: Telefono,
+                            direccion: Direccion,
+                            provincia: Provincia,
+                            distrito: Distrito,
+                            correo: Correo,
+                            rubro: Rubro,
+                        })
+                    });
+
+                    const text = await response.text(); // Leer la respuesta como texto
+                    console.log('Respuesta del servidor:', text); // Imprimir la respuesta para depuración
+
+                    if (response.ok) {
+                        // Cerrar el modal inmediatamente
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('registrarProveedorModal'));
+                        modal.hide();
+                        resetForm();
+                        updateFloatingLabels(false);
+                        obtenerProveedor(); // Actualiza la lista después de guardar
+                        // Mostrar mensaje de éxito después de que el modal se haya cerrado
+                        Swal.fire({
+                            title: '¡Registros guardados!',
+                            text: 'El cliente se guardó exitosamente.',
+                            icon: 'success',
+                            timer: 1000,               // Tiempo en milisegundos (3000 ms = 3 segundos)
+                            showConfirmButton: false    // Ocultar botón de confirmación
+                        }).then(() => {
+                          
+                        });
+                    } else {
+                        Swal.fire('Error', `Error: ${text}`, 'error');
+                    }
+                } catch (error) {
+                    console.error('Error al enviar la solicitud:', error);
+                    Swal.fire('Error', 'Error al actualizar el cliente', 'error');
+                }
+            }
+        });
+    }
+
+    async function Modificar(event) {
+        if (event) event.preventDefault(); // Prevenir el envío por defecto
+
+        // Mostrar el mensaje de confirmación
+        const confirmResult = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡Se modificará la información del personal!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, modificar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (!confirmResult.isConfirmed) {
+            return; // Si el usuario cancela, no hacemos nada
+        }
+
+        // Cerrar el modal antes de proceder
+        $('#miModal').modal('hide'); // Asegúrate de que el ID del modal coincida con el que estás usando
+
+
+        const ID_Tipo_Doc = document.getElementById('ID_Tipo_Doc').value;
+        const Numero_documento = document.getElementById('numero_documento').value;
+        const Nombre = document.getElementById('nombre').value;
+        const Contacto = document.getElementById('contacto').value;
+        const Telefono = document.getElementById('telefono').value;
+        const Direccion = document.getElementById('direccion').value;
+        const Provincia = document.getElementById('provincia').value;
+        const Distrito = document.getElementById('distrito').value;
+        const Correo = document.getElementById('correo').value;
+        const Rubro = document.getElementById('rubro').value;
+
+
+        try {
+            const response = await fetch(`${apiBaseUrl}/proveedor/modificar/${Numero_documento}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    Id_tdoc_proveedor: ID_Tipo_Doc,
+                    numero_documento: Numero_documento,
+                    nombre: Nombre,
+                    contacto: Contacto,
+                    telefono: Telefono,
+                    direccion: Direccion,
+                    provincia: Provincia,
+                    distrito: Distrito,
+                    correo: Correo,
+                    rubro: Rubro,
+                })
+            });
+
+            const text = await response.text(); // Leer la respuesta como texto
+            console.log('Respuesta del servidor:', text); // Imprimir la respuesta para depuración
+
+            if (response.ok) {
+                   // Cerrar el modal inmediatamente
+                   const modal = bootstrap.Modal.getInstance(document.getElementById('registrarProveedorModal'));
+                   modal.hide();
+                   resetForm();
+                   updateFloatingLabels(false);
+                   obtenerProveedor(); // Actualiza la lista después de guardar
+                const result = JSON.parse(text); // Intentar analizar el texto como JSON
+                // Mostrar mensaje de éxito después de que el modal se haya cerrado
+                Swal.fire({
+                    title: '¡Datos modificados!',
+                    text: 'El cliente se modificó exitosamente.',
+                    icon: 'success',
+                    timer: 1000,               // Tiempo en milisegundos (3000 ms = 3 segundos)
+                    showConfirmButton: false    // Ocultar botón de confirmación
+                }).then(() => {
+                });
+            } else {
+                Swal.fire('Error', `Error: ${text}`, 'error');
+            }
+        } catch (error) {
+            console.error('Error al enviar la solicitud:', error);
+            Swal.fire('Error', 'Error al actualizar el cliente', 'error');
+        }
+    }
+
+    function loadDocIdent() {
+        fetch(`${apiBaseUrl}/proveedor/getTdoc_ident`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al cargar datos');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const select = document.getElementById('ID_Tipo_Doc');
+                data.forEach(tdoc_ident => {
+                    const option = document.createElement('option');
+                    option.value = tdoc_ident.ID_Tipo_Doc;
+                    option.textContent = tdoc_ident.Documeto_identidad;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error al obtener tipos de documento:', error));
+    }
+
+    function resetForm() {
+        // Restablecer los valores de los campos de texto
+        document.getElementById('numero_documento').value = '';
+        document.getElementById('nombre').value = '';
+        document.getElementById('provincia').value = '';
+        document.getElementById('distrito').value = '';
+        document.getElementById('direccion').value = '';
+        document.getElementById('correo').value = '';
+        document.getElementById('telefono').value = '';
+        // Restablecer los combo box a su primer valor
+        document.getElementById('ID_Tipo_Doc').selectedIndex = 0; // O usar .value = '';
+
+        // Restablecer el color de borde de los campos
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.style.borderColor = ''; // Restablecer el color de borde a su estado original
+        });
+    }
+
+    function validarNumero(input) {
+        const value = input.value;
+        const tipoDocumento = document.getElementById('ID_Tipo_Doc').value; // Obtiene el valor del tipo de documento
+
+        // Elimina caracteres no numéricos
+        const cleaned = value.replace(/[^0-9]/g, '');
+        input.value = cleaned;
+
+        // Verifica longitud según tipo de documento
+        if (tipoDocumento === "1" && cleaned.length === 8) {
+            input.style.borderColor = 'black'; // Color de borde para válido
+        } else if (tipoDocumento === "4" && cleaned.length === 11) {
+            input.style.borderColor = 'black'; // Color de borde para válido
+        } else {
+            input.style.borderColor = 'red'; // Color de borde para inválido
+        }
+    }
+
+    function validarLetras(input) {
+        // Obtiene el valor actual del campo de entrada
+        const value = input.value;
+
+        // Reemplaza todo lo que no sea una letra o espacio
+        const cleaned = value.replace(/[^a-zA-Z\s]/g, '');
+
+        // Actualiza el valor del campo
+        input.value = cleaned;
+
+        // Valida si el valor contiene solo letras y espacios y tiene más de 2 caracteres
+        const isValid = /^[a-zA-Z\s]{3,}$/.test(cleaned);
+
+        // Cambia el borde del campo en función de la validez
+        if (isValid) {
+            input.style.borderColor = 'black'; // Color de borde para campo válido
+        } else {
+            input.style.borderColor = 'red'; // Color de borde para campo inválido
+        }
+    }
+
+    function validarSelect(select) {
+
+        document.getElementById('numero_documento').value = '';
+        document.getElementById('nombre').value = '';
+        document.getElementById('provincia').value = '';
+        document.getElementById('distrito').value = '';
+        document.getElementById('direccion').value = '';
+        document.getElementById('correo').value = '';
+        document.getElementById('telefono').value = '';
+        // Restablecer el color de borde de los campos
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.style.borderColor = ''; // Restablecer el color de borde a su estado original
+        });
+
+        // Obtiene el valor seleccionado
+        const value = select.value;
+
+        // Valida que se haya seleccionado una opción válida (no el valor predeterminado)
+        const isValid = value !== "";
+
+        // Cambia el borde del campo en función de la validez
+        if (isValid) {
+            select.style.borderColor = 'black'; // Color de borde para selección válida
+        } else {
+            select.style.borderColor = 'red'; // Color de borde para selección inválida
+        }
+
+        return isValid;
+    }
+
+    function validarCorreo(input) {
+        let value = input.value;
+
+        // Expresión regular básica para validar correos electrónicos
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Autocompletar con "@gmail.com" si el usuario escribe "@"
+        if (value.includes('@') && !value.includes('@gmail.com')) {
+            const parts = value.split('@');
+            if (parts[1] === '') {
+                input.value = `${parts[0]}@gmail.com`;
+                value = input.value; // Actualizar el valor con la nueva cadena
+            }
+        }
+
+        // Validar correo electrónico
+        if (regex.test(value)) {
+            input.style.borderColor = 'black'; // Color de borde para válido
+        } else {
+            input.style.borderColor = 'red'; // Color de borde para inválido
+        }
+    }
+
+    function validarTelefono(input) {
+        let value = input.value;
+
+        // Elimina todos los caracteres que no sean números
+        const cleaned = value.replace(/[^0-9]/g, '');
+
+        // Valida el número con el prefijo +51 9
+        let numberPart = cleaned;
+
+        // Si el número comienza con el prefijo +51 9
+        if (cleaned.startsWith('51') && cleaned.length > 2) {
+            numberPart = cleaned.substring(2);
+            if (numberPart.startsWith('9')) {
+                numberPart = numberPart.substring(1); // Elimina el 9
+            }
+        }
+
+        // Solo permite hasta 8 dígitos después del prefijo +51 9
+        if (numberPart.length > 8) {
+            numberPart = numberPart.substring(0, 8);
+        }
+
+        // Actualiza el valor del campo
+        input.value = `+51 9${numberPart}`;
+
+        // Valida si el número tiene exactamente 8 dígitos después del prefijo
+        const isValid = numberPart.length === 8;
+
+        // Cambia el borde del campo en función de la validez
+        if (isValid) {
+            input.style.borderColor = 'black'; // Color de borde para campo válido
+        } else {
+            input.style.borderColor = 'red'; // Color de borde para campo inválido
+        }
+    }
+   
+    function validarCampovacios(input) {
+        if (input.value.trim() !== "") {
+            input.style.border = "1px solid black";
+        } else {
+            input.style.border = "";
+        }
+    }
+
+</script>

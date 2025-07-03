@@ -1,0 +1,117 @@
+ 
+ body {
+    font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 1rem;
+    font-weight: 100%;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #f4f4fc;
+    /* Fondo gris claro */
+
+}
+.content-wrapper {
+    padding-top: 20px;
+    padding-right: -10px;
+    padding-left: 5px;
+    padding-block-end: 3px;
+
+    background-color: #f4f4fc;
+
+}
+
+ 
+ .chart-container {
+     position: relative;
+     width: 100%;
+     height: 100%;
+     border: 2px solid #0a2f56;
+     border-radius: 8px;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+     margin-bottom: 20px;
+
+ }
+
+ .small-box {
+     position: relative;
+     border-radius: 10px;
+     padding: 10px;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+     margin-bottom: 20px;
+     color: #fff;
+     overflow: hidden;
+ }
+
+ .small-box .inner {
+     padding: 10px;
+ }
+
+ .small-box .inner h4 {
+     font-size: 20px;
+ }
+
+ .small-box .inner p {
+     font-size: 15px;
+ }
+
+ .small-box .icon {
+     position: absolute;
+     top: 13px;
+     right: 45px;
+     font-size: 50px;
+     color: rgba(10, 10, 10, 0.275);
+     transform: translateX(50%);
+     /* Mueve el ícono más a la derecha */
+ }
+
+ .small-box .small-box-footer {
+     position: absolute;
+     /* Cambiado a absolute */
+     bottom: 0;
+     /* Posición en la parte inferior */
+     left: 0;
+     /* Alineado a la izquierda */
+     width: 100%;
+     /* Ancho completo */
+     display: block;
+     background: rgba(0, 0, 0, 0.26);
+     text-decoration: none;
+     border-radius: 0 0 5px 5px;
+     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+     /* Añadir sombra si lo deseas */
+ }
+
+ .small-box .small-box-footer:hover {
+     background: rgba(0, 0, 0, 0.2);
+ }
+
+ .small-box.bg-info {
+     background: #17a2b8;
+     border-bottom: 5px solid #0d8fa3;
+ }
+
+ .small-box.bg-warning {
+     background: #646362 !important;
+     border-bottom: 5px solid rgb(124, 122, 118);
+
+ }
+
+ .small-box.bg-danger {
+     background: #dc3545;
+     border-bottom: 5px solid #c22f3e;
+ }
+
+ .small-box.bg-primary {
+     background: #007bff;
+     border-bottom: 5px solid #1863b3;
+ }
+
+ .small-box.bg-secondary {
+     background: #6c757d;
+     border-bottom: 5px solid #5e6063;
+ }
+
+ .small-box.bg-bajo {
+     background: #dd5127;
+     border-bottom: 5px solid #5e6063;
+ }

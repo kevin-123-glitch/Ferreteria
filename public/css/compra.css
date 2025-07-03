@@ -1,0 +1,319 @@
+
+
+body {
+    font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 1rem;
+    font-weight: 100%;
+    color: #212529;
+    text-align: left;
+    background-color: #f4f4fc ;
+    /* Fondo gris claro */
+    padding-top: 20px;
+
+
+}
+
+.header-section {
+    display: block;
+    padding: 0px;
+    width: 100%;
+}
+
+.title {
+    font-family: 'Merriweather', serif; /* Aplica la fuente Merriweather */
+    font-weight: 100; /* Ajusta el grosor de la fuente */
+    margin: 0 0 10px 0; /* Espacio debajo del título */
+    text-align: left; /* Alinea el texto a la izquierda */
+    font-size: 1.5rem; /* Tamaño de la fuente */
+    letter-spacing: 0.05em; /* Espaciado entre letras opcional */
+}
+
+
+
+.content {
+    padding-right: 8px;
+    padding-left: 8px;
+    /* Agregar relleno para el contenido */
+}
+
+.content-wrapper {
+    padding-right: 8px;
+    padding-left: 8px;
+    /* Agregar relleno para el contenido */
+    background-color: #f4f4fc ;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombreado leve */
+}
+
+.custom-container {
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #fffcfc;
+    /* Fondo blanco para el contenedor */
+    border-radius: 5px;
+    /* Esquinas redondeadas */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Sombra sutil */
+    /* 70% del alto de la ventana */
+    padding: 1.25rem;
+    /*border-top: 3px solid #17a2b8;*/
+    /* Línea azul en la parte superior */
+    max-width: 100%;
+    /* Ajusta el ancho máximo del contenedor según tus necesidades */
+    width: 100%;
+    /* Asegura que el contenedor ocupe todo el ancho disponible */
+    box-sizing: border-box;
+    /* Incluye padding y border en el ancho total */
+    overflow: hidden; /* Oculta cualquier desbordamiento */
+    height: auto;
+
+
+}
+
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-container h2 {
+    margin: 0;
+    font-weight: 500;
+    color: #0a0a0a;
+    font-size: 0.9rem
+}
+
+
+/*************************************************************************************************/
+.header-container .btn {
+    font-size: 0.8rem;
+    /* Tamaño de fuente del botón */
+    font-weight: 500;
+    /* Cambiar a negrita para mayor visibilidad */
+    padding: 0.5rem 1rem;
+    /* Relleno interno del botón */
+    width: 65px;
+    /* Ancho del botón */
+    height: 25px;
+    /* Alto del botón */
+    border-radius: 0.25rem;
+    /* Bordes redondeados */
+    display: flex;
+    align-items: center;
+    /* Alineación vertical del texto */
+    justify-content: center;
+    /* Alineación horizontal del texto */
+    background-color: #17a2b8;
+    /* Color de fondo del botón */
+    border: 1px solid #17a2b8;
+    /* Color del borde igual al color de fondo */
+
+}
+
+.header-container .btn i {
+    font-size: 0.9rem;
+    /* Tamaño del ícono */
+    margin-right: 0.2rem;
+    /* Espacio entre el ícono y el texto */
+    font-weight: 700;
+    /* Cambiar a negrita para mayor visibilidad */
+
+}
+
+/* Nueva clase .action-container */
+.action-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+/* Nueva clase .dt-buttons */
+.dt-buttons {
+    display: flex;
+    gap: 0.1rem;
+    /* Espacio entre los botones */
+}
+
+.dt-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+
+/*************************************************************************************************/
+
+.search-container label {
+    margin-bottom: 0;
+    /* Elimina el margen inferior del label */
+    font-size: 0.9rem;
+    /* Tamaño del ícono */
+
+}
+
+.search-container input {
+    width: 200px; /* Ancho del campo de búsqueda */
+    height: 30.8px; /* Altura del campo de búsqueda */
+    line-height: 30.8px; /* Alineación vertical del texto */
+    padding: 0.5rem; /* Relleno interno del input */
+    border-radius: 3px; /* Esquinas redondeadas */
+    font-size: 14px; /* Tamaño del texto dentro del campo de búsqueda */
+    border: 1px solid #807f7f; /* Color del borde */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra del campo de búsqueda */
+    outline: none; /* Elimina el contorno predeterminado del navegador */
+}
+
+.search-container input:focus {
+    border: 1px solid #17a2b8; /* Color del borde cuando el campo está enfocado */
+    box-shadow: 0 1px 1px rgba(49, 190, 190, 0.4); /* Sombra verde personalizada */
+    outline: none; /* Asegúrate de que el contorno no aparezca */
+}
+.search-container {
+    display: flex;
+    justify-content: center; /* Centra el contenedor de búsqueda horizontalmente */
+    width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
+}
+
+.search-wrapper {
+    position: relative;
+    width: 100%; /* Asegura que el contenedor de búsqueda ocupe todo el ancho disponible */
+}
+
+.search-container input {
+    width: 100%; /* Asegura que el campo de búsqueda ocupe todo el ancho del contenedor */
+    height: 35px; /* Altura del campo de búsqueda */
+    padding: 0 40px; /* Espacio para los íconos a ambos lados */
+    border-radius: 3px; /* Bordes redondeados */
+    border: 1px solid #807f7f; /* Color del borde */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra del campo de búsqueda */
+    box-sizing: border-box; /* Incluye padding y border en el ancho total */
+}
+
+.icon-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1.2rem; /* Tamaño del ícono */
+}
+
+.icon-button.left {
+    left: 5px; /* Espacio desde el borde izquierdo del campo de búsqueda */
+}
+
+.icon-button.right {
+    right: 5px; /* Espacio desde el borde derecho del campo de búsqueda */
+    color: #05a30a; /* Color del ícono (puedes cambiarlo según tu necesidad) */
+
+}
+
+.position-relative {
+    position: relative;
+}
+
+.icon-right {
+    position: absolute;
+    right: 10px; /* Ajusta este valor según el espacio que desees */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #000; /* Puedes cambiar el color si lo deseas */
+    cursor: pointer;
+}
+
+.divider {
+    border-top: 1px solid #6c757d;
+    margin: 1rem 0;
+    width: 100%;
+
+}
+
+.form-group {
+    margin-bottom: 15px;
+    /* Ajusta este valor según lo que necesites */
+}
+
+.btn-block {
+    width: 100%;
+    display: block;
+}
+
+
+#btnGuardar {
+    background-color: #83da8d;
+    /* Color personalizado para el botón Guardar */
+    border-color: #83da8d;
+    /* Color del borde personalizado */
+}
+
+
+#btnCancelar {
+    background-color: #ec7777;
+    /* Color personalizado para el botón Cancelar */
+    border-color: #ec7777;
+    /* Color del borde personalizado */
+}
+
+#btnGuardar:hover {
+    background-color: #1dbc2aca;
+    /* Color al pasar el mouse sobre el botón Guardar */
+    border-color: #1dbc2aca;
+    /* Color del borde al pasar el mouse sobre el botón Guardar */
+}
+
+#btnCancelar:hover {
+    background-color: #e34848;
+    /* Color al pasar el mouse sobre el botón Cancelar */
+    border-color: #ec7777;
+    /* Color del borde al pasar el mouse sobre el botón Cancelar */
+}
+
+#suggestions {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    max-height: 200px;
+    width: 100%;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    /* Oculto por defecto */
+}
+#suggestionsproveedor {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    max-height: 200px;
+    width: 100%;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    /* Oculto por defecto */
+}
+
+.list-group-item {
+    cursor: pointer;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+.columna {
+    text-align: right;
+    /* Alinea la celda a la derecha */
+}
+
+.cantidad-input {
+    text-align: center;
+    /* Centra el contenido dentro del campo de texto */
+}
+
+.descuento-input {
+    text-align: center;
+    /* Centra el contenido dentro del campo de texto */
+}
+
+  

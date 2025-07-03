@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta Proveedor</title>
+    <script>
+        async function consultarDocumento() {
+            const tipoDocumento = document.getElementById('ID_Tipo_Doc').value;
+            const numeroDocumento = document.getElementById('numero_documento').value;
+            let url;
+
+            if (tipoDocumento === "dni") {
+                url = `https://apiperu.dev/api/dni/${numeroDocumento}`;
+            } else if (tipoDocumento === "ruc") {
+                url = `https://apiperu.dev/api/ruc/${numeroDocumento}`;
+            } else {
+                alert('Seleccione un tipo de documento.');
+                return;
+            }
+
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer e42ebd0a0971977dd9bd6f843f3599bad83ed5c67758f6dcb8871a3af32a1186'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error al consultar el ${tipoDocumento.toUpperCase()}`);
+                }
+
+                const data = await response.json();
+                if (data.success) {
+                    if (tipoDocumento === "dni") {
+                        const info = data.data;
+                        document.getElementById('nombre').value = info.nombre_completo;
+                        document.getElementById('direccion').value = info.direccion || "";
+                        document.getElementById('provincia').value = info.ubigeo[1] || ""; // Suponiendo que el índice 1 es la provincia
+                        document.getElementById('distrito').value = info.ubigeo[2] || ""; // Suponiendo que el índice 2 es el distrito
+                    } else if (tipoDocumento === "ruc") {
+                        const info = data.data;
+                        document.getElementById('nombre').value = info.nombre_o_razon_social;
+                        document.getElementById('direccion').value = info.direccion || "";
+                        document.getElementById('provincia').value = info.provincia || "";
+                        document.getElementById('distrito').value = info.distrito || "";
+                    }
+                }
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+    
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .floating-label-group, .floating-label-select-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        input, select {
+            padding: 10px;
+            margin-right: 10px;
+            width: 100%;
+        }
+        button {
+            padding: 10px 15px;
+        }
+        .position-relative {
+            position: relative;
+        }
+        .position-absolute {
+            position: absolute;
+            right: 10px; /* Ajusta según necesites */
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <form id="proveedorForm" onsubmit="event.preventDefault();">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="floating-label-select-group">
+                    <select id="ID_Tipo_Doc" name="ID_Tipo_Doc" class="form-control" required>
+                        <option value="" disabled selected>Tipo de Documento</option>
+                        <option value="dni">DNI</option>
+                        <option value="ruc">RUC</option>
+                    </select>
+                    <label class="floating-label" for="ID_Tipo_Doc">Tipo de Documento</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="floating-label-group position-relative">
+                    <input type="text" id="numero_documento" name="numero_documento"
+                           class="form-control" placeholder="Número de documento" required>
+                    <label class="floating-label" for="numero_documento">Número de documento</label>
+                    <i class="fas fa-search position-absolute" onclick="consultarDocumento()"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="floating-label-group">
+                    <input type="text" id="nombre" name="nombre" class="form-control"
+                           placeholder="Nombre de la empresa" required>
+                    <label class="floating-label" for="nombre">Nombre de la empresa</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="floating-label-group">
+                    <input type="text" id="contacto" name="contacto" class="form-control"
+                           placeholder="Contacto">
+                    <label class="floating-label" for="contacto">Nombre del Contacto</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="floating-label-group">
+                    <input type="text" id="telefono" name="telefono" class="form-control"
+                           placeholder="Teléfono">
+                    <label class="floating-label" for="telefono">Teléfono</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="floating-label-group">
+                    <input type="text" id="direccion" name="direccion" class="form-control"
+                           placeholder="Dirección">
+                    <label class="floating-label" for="direccion">Dirección</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="floating-label-group">
+                    <input type="text" id="provincia" name="provincia" class="form-control"
+                           placeholder="Provincia">
+                    <label class="floating-label" for="provincia">Provincia</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="floating-label-group">
+                    <input type="text" id="distrito" name="distrito" class="form-control"
+                           placeholder="Distrito">
+                    <label class="floating-label" for="distrito">Distrito</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="floating-label-group">
+                    <input type="email" id="correo" name="correo" class="form-control"
+                           placeholder="Correo electrónico">
+                    <label class="floating-label" for="correo">Correo electrónico</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="floating-label-group">
+                    <input type="text" id="rubro" name="rubro" class="form-control"
+                           placeholder="Rubro">
+                    <label class="floating-label" for="rubro">Rubro del proveedor</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <button type="button" id="consultarButton" class="btn btn-primary" onclick="consultarDocumento()">Consultar</button>
+            </div>
+        </div>
+    </form>
+
+    <div id="message" class="message mt-3"></div>
+</body>
+</html>

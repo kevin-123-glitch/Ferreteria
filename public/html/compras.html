@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap5.min.css" />
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="../css/compra.css"> <!-- Enlaza el archivo CSS global -->
+    <link rel="stylesheet" href="../css/tablasCompras.css"> <!-- Enlaza el archivo CSS global -->
+
+    <!-- Excel y PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.6.0/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-invoice-template@latest/dist/index.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <div class="content">
+        <div class="row mb-3">
+            <div class="col-md-9" style="margin-bottom: 15px;">
+                <div class="custom-container">
+                    <div class="search-container">
+                        <div class="search-wrapper">
+                            <button class="icon-button left">
+                                <i class="fa fa-barcode"></i> <!-- Cambia este ícono según tu necesidad -->
+                            </button>
+                            <input type="search" id="search-input" class="form-control"
+                                placeholder="Ingrese el código de barras o el nombre del producto" autocomplete="off"
+                                required>
+                            <div id="suggestions" class="list-group"></div>
+                        </div>
+                    </div>
+                    <hr class="divider">
+                    <div class="table-responsive">
+                        <table id="diseñoTable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>N°</th>
+                                    <th class="hide-mobile">ID</th>
+                                    <th>Codigo</th>
+                                    <th>Producto</th>
+                                    <th>Cant.</th>
+                                    <th>Precio</th>
+                                    <th>Importe</th>
+                                    <th class="hide-mobile">Medida</th>
+                                    <th class="hide-mobile">Marca</th>
+                                    <th>Desc. %</th>
+                                    <th>---</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Las filas se llenarán dinámicamente con JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr class="divider">
+                    <!-- Contenedor principal -->
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 mb-3 rounded-3"
+                                style="background-color: #ffffff; color: black; text-align: center; border: 1px solid gray; padding: 1px; box-sizing: border-box; width: 100%;">
+                                <h2 class="fw-bold m-0">S/ <span class="fw-bold" id="subtotal">0.00</span></h2>
+                            </div>
+                            <!-- Botones -->
+                            <button id="btnCancelar" type="button" class="btn btn-secondary btn-block mt-2">
+                                Cancelar
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+                <div class="custom-container">
+                    <!-- SELECCIONAR TIPO DE DOCUMENTO -->
+                    <div class="form-group mb-3" style="margin-bottom: 10px;">
+                        <label class="col-form-label p-0" for="selDocumentoVenta">
+                            <span class="small">Tipo de Documento </span><span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example"
+                            id="selDocumentoVenta">
+                            <option value="" id="0" disabled selected>Seleccione</option>
+                            <option value="Boleta" data-prefix="B-" id="1">Boleta</option>
+                            <option value="Factura" data-prefix="F-" id="2">Factura</option>
+                            <option value="Ticket" data-prefix="T-" id="3">Ticket</option>
+                        </select>
+
+                    </div>
+
+                    <!-- SERIE Y NRO DE DOCUMENTO -->
+                    <div class="form-group" style="margin-bottom: 5px;">
+                        <div class="row">
+                            <div class="col-md-6" style="margin-bottom: 10px;">
+                                <span class="small">N° serie </span><span class="text-danger">*</span>
+                                <input type="text" min="0" maxlength="7" name="iptNroSerie" id="iptNroSerie"
+                                    class="form-control form-control-sm" placeholder="S-000" autocomplete="off">
+                            </div>
+                            <div class="col-md-6">
+                                <span class="small">N° de documento </span><span class="text-danger">*</span>
+                                <input type="text" name="iptNroVenta" id="iptNroVenta"
+                                    class="form-control form-control-sm" placeholder="000000" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group mb-3" style="margin-bottom: 10px;">
+                        <label class="col-form-label p-0" for="inputProveedor">
+                            <span class="small">Proveedor </span><span class="text-danger">*</span>
+                        </label>
+                        <div class="position-relative">
+                            <input type="text" class="form-control form-control-sm" id="proveedor-input"
+                                placeholder="Busqueda por Nombre -- RUC" autocomplete="off">
+                            <i class="fa fa-plus icon-right"></i> <!-- Ícono en el lado derecho -->
+                        </div>
+
+                        <ul id="suggestionsproveedor" class="list-group"></ul> <!-- Lista para mostrar sugerencias -->
+
+                        <input id="Id_obtenido_proveedor" style="display:none">
+
+                    </div>
+
+
+                    <div class="form-group mb-3" style="margin-bottom: 10px;">
+                        <div class="row">
+                            <div class="col-md-6" style="margin-bottom: 10px;">
+                                <label class="col-form-label p-0" for="selCategoriaReg">
+                                    <span class="small">Metodo de pago</span><span class="text-danger">*</span>
+                                </label>
+                                <select class="form-select form-select-sm" aria-label=".form-select-sm example"
+                                    id="selTipoPago">
+                                    <option id="0" value="" disabled selected>Seleccione</option>
+                                    <option id="1" value="Efectivo">Efectivo</option>
+                                    <option id="2" value="Yape">Yape</option>
+                                    <option id="3" value="Plin">Plin</option>
+                                    <option id="4" value="Transferencia">Transferencia</option>
+                                    <option id="5" value="Cheque">Cheque</option>
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="col-form-label p-0" for="descuentoGeneral">
+                                    <span class="small">Desc. Global %</span><span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative ">
+                                    <input type="number" class="form-control" id="descuentoGeneral"
+                                        style="text-align: center;height:30px;" placeholder="" autocomplete="off"
+                                        value="0" min="0" max="100">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <div class="container-fluid">
+                        <div class="row fw-bold">
+
+                            <!-- Operaciones Exoneradas -->
+                            <div class="col-md-7">
+                                <span>SUB TOTAL</span>
+                            </div>
+                            <div class="col-md-5 text-end">
+                                S/ <span id="subtotal2">0.00</span>
+                            </div>
+
+                            <!-- IGV (18%) -->
+                            <div class="col-md-7">
+                                <span>IGV (18%)</span>
+                            </div>
+                            <div class="col-md-5 text-end">
+                                S/ <span id="igv">0.00</span>
+                            </div>
+
+                            <!-- Descuento -->
+                            <div class="col-md-7" style=" color: rgb(194, 31, 31);">
+                                <span>- DES.(%)
+                                </span>
+                            </div>
+                            <div class="col-md-5 text-end" style=" color: rgb(194, 31, 31);">
+                                S/ <span id="total_descuento">0.00</span>
+                            </div>
+
+                            <hr class="divider" style="margin-bottom: 10px;">
+
+                            <!-- Total -->
+                            <div class="col-md-7">
+                                <span>TOTAL</span>
+                            </div>
+                            <div class="col-md-5 text-end">
+                                S/ <span id="total">0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <!-- Botones -->
+                    <div class="form-group mb-3">
+                        <button id="btnGuardar" type="button" class="btn btn-primary btn-block">
+                            Guardar
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div><!-- ./content -->
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.0/js/responsive.bootstrap5.min.js"></script>
+  
+    <script src="/config/api.js"></script>
+    <script src="../js/compras.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            document.getElementById('btnGuardar').addEventListener('click', async function () {
+
+                try {
+                    var table = $('#diseñoTable').DataTable();
+                    const Validar_Sub_total = document.getElementById('subtotal');
+
+
+                    // Recolectar datos del formulario
+                    const nroSerie = document.getElementById('iptNroSerie').value.trim();
+                    const nroVenta = document.getElementById('iptNroVenta').value.trim();
+
+                    // Obtener el id del tipo de documento
+                    // Obtener el select y el ID del option seleccionado
+                    const select = document.getElementById('selDocumentoVenta');
+                    const selectedOption = select.options[select.selectedIndex];
+                    const idSeleccionadoDocumento = selectedOption.id;
+
+                    // Obtener el id del tipo de pago
+                    const tipoPagoSelect = document.getElementById('selTipoPago');
+                    const selectedTipoPagoOption = tipoPagoSelect.options[tipoPagoSelect.selectedIndex];
+                    const tipoPagoId = selectedTipoPagoOption.getAttribute('id'); // ID del tipo de pago
+                    const tipoPagoValue = selectedTipoPagoOption.value; // Valor del tipo de pago
+
+                    // Obtener el id del proveedor
+                    const proveedorId = parseInt(document.getElementById('Id_obtenido_proveedor').value.trim(), 10);
+
+                    const descuentoGeneral = parseFloat(document.getElementById('descuentoGeneral').value.trim());
+
+                    const ValidadDocumento = document.getElementById('selDocumentoVenta').value;
+
+
+                    if (table.data().count() === 0) {
+                        Swal.fire({
+                            text: 'Por favor, seleccione un producto antes de continuar.',
+                            imageUrl: "../images/Tabla_compras.png",  // Ruta a la imagen personalizada
+                            imageWidth: 450,  // Ajusta el ancho de la imagen según lo necesites
+                            imageHeight: 200, // Ajusta la altura de la imagen según lo necesites
+                            imageAlt: 'Imagen de advertencia', // Texto alternativo para la imagen
+                            confirmButtonText: 'Aceptar',
+                            customClass: {
+                                title: 'swal-title',
+                                content: 'swal-content',
+                                confirmButton: 'swal-confirm-button'
+                            }
+                        });
+                        return;
+                    }
+
+                      // Validaciones
+                      if (!ValidadDocumento) {
+                        Swal.fire({
+                            text: 'Debe seleccionar un tipo de comprobante.',
+                            imageUrl: "../images/tipo_documento.png",  // Ruta a la imagen personalizada
+                            imageWidth: 200,  // Ajusta el ancho de la imagen según lo necesites
+                            imageHeight: 200, // Ajusta la altura de la imagen según lo necesites
+                            imageAlt: 'Imagen de advertencia', // Texto alternativo para la imagen
+                            confirmButtonText: 'Aceptar',
+                            customClass: {
+                                title: 'swal-title',
+                                content: 'swal-content',
+                                confirmButton: 'swal-confirm-button'
+                            }
+                        });
+                        return;
+                    }
+
+
+                    // Validaciones
+                    if (!nroSerie) {
+                        Swal.fire({
+                            text: 'Debe ingresar la serie de la compra.',
+                            imageUrl: "../images/serie.png",  // Ruta a la imagen personalizada
+                            imageWidth: 300,  // Ajusta el ancho de la imagen según lo necesites
+                            imageHeight: 200, // Ajusta la altura de la imagen según lo necesites
+                            confirmButtonText: 'Aceptar',
+                            customClass: {
+                                title: 'swal-title',
+                                content: 'swal-content',
+                                confirmButton: 'swal-confirm-button'
+                            }
+                        });
+                        return;
+                    }
+
+                    // Validaciones
+                    if (!nroVenta) {
+                        Swal.fire({
+                            text: 'Debe ingresar el N° de documento de la compra .',
+                            imageUrl: "../images/numero1.png",  // Ruta a la imagen personalizada
+                            imageWidth: 300,  // Ajusta el ancho de la imagen según lo necesites
+                            imageHeight: 200, // Ajusta la altura de la imagen según lo necesites
+                            imageAlt: 'Imagen de advertencia', // Texto alternativo para la imagen
+                            confirmButtonText: 'Aceptar',
+                            customClass: {
+                                title: 'swal-title',
+                                content: 'swal-content',
+                                confirmButton: 'swal-confirm-button'
+                            }
+                        });
+                        return;
+                    }
+
+                    if (!proveedorId) {
+                        Swal.fire({
+                            text: 'Debe seleccionar un proveedor.',
+                            imageUrl: "../images/proveedor.png",  // Ruta a la imagen personalizada
+                            imageWidth: 300,  // Ajusta el ancho de la imagen según lo necesites
+                            imageHeight: 200, // Ajusta la altura de la imagen según lo necesites
+                            imageAlt: 'Imagen de advertencia', // Texto alternativo para la imagen
+                            confirmButtonText: 'Aceptar',
+                            customClass: {
+                                title: 'swal-title',
+                                content: 'swal-content',
+                                confirmButton: 'swal-confirm-button'
+                            }
+                        });
+                        return;
+                    }
+
+                    if (tipoPagoId == 0) {
+                        Swal.fire({
+                            text: 'Debe seleccionar metodo de pago de pago.',
+                            imageUrl: "../images/metodo_pago.png",  // Ruta a la imagen personalizada
+                            imageWidth: 300,  // Ajusta el ancho de la imagen según lo necesites
+                            imageHeight: 200, // Ajusta la altura de la imagen según lo necesites
+                            imageAlt: 'Imagen de advertencia', // Texto alternativo para la imagen
+                            confirmButtonText: 'Aceptar',
+                            customClass: {
+                                title: 'swal-title',
+                                content: 'swal-content',
+                                confirmButton: 'swal-confirm-button'
+                            }
+                        });
+                        return;
+                    }
+                    // Recolectar detalles de la tabla
+                    const detalles = Array.from(document.querySelectorAll('#diseñoTable tbody tr')).map(row => {
+                        return {
+                            Id_producto: row.cells[1].textContent.trim(),
+                            Cantidad: parseFloat(row.querySelector('.cantidad-input').value),
+                            Precio: parseFloat(row.cells[5].textContent.trim()),
+                            Importe: parseFloat(row.cells[6].textContent.trim()),
+                            Descuento: parseFloat(row.querySelector('.descuento-input').value)
+                        };
+                    });
+
+                    // Obtener valores de los cálculos
+                    const subtotal = parseFloat(document.getElementById('subtotal').textContent.trim());
+                    const igv = parseFloat(document.getElementById('igv').textContent.trim());
+                    const descuento = parseFloat(document.getElementById('total_descuento').textContent.trim());
+                    const total = parseFloat(document.getElementById('total').textContent.trim());
+
+
+
+                    // Preparar el cuerpo de la solicitud
+                    const bodyData = {
+                        Id_documentos_comprobantes: idSeleccionadoDocumento, // Este valor puede depender de tu lógica
+                        Serie: nroSerie,
+                        Numero_documento_serie: nroVenta,
+                        id_proveedor: proveedorId,
+                        Id_tipo_pago: tipoPagoId, // ID del tipo de pago
+                        Porcentaje_descuento: descuentoGeneral,
+                        Fecha_registro: new Date().toISOString().split('T')[0], // Fecha actual en formato YYYY-MM-DD
+                        SubTotal: subtotal,
+                        Igv: igv,
+                        Descuento: descuento,
+                        Total: total,
+                        detalles: detalles // Usar los detalles recolectados de la tabla
+                    };
+
+                    // Enviar la solicitud al servidor
+                    const response = await fetch(`${apiBaseUrl}/compra/registrar`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(bodyData)
+                    });
+
+                    if (response.ok) {
+                        Swal.fire({
+                            title: 'Éxito',
+                            text: 'Datos guardados correctamente',
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar'
+                        });
+
+                        // Llamar a la función para limpiar la tabla y restablecer los valores
+                        limpiarTablaYRestablecerValores();
+
+                    } else {
+                        const errorData = await response.json();
+                        console.error('Error en la respuesta:', errorData); // Log de errores de la respuesta
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se pudo guardar los datos: ' + (errorData.error || 'Error desconocido'),
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error en la solicitud:', error); // Log del error en la solicitud
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ocurrió un error en la solicitud',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            });
+
+
+            function limpiarTablaYRestablecerValores() {
+                // Limpiar la tabla
+                const tbody = document.querySelector('#diseñoTable tbody');
+                while (tbody.firstChild) {
+                    tbody.removeChild(tbody.firstChild);
+                }
+
+                // Restablecer los campos del formulario
+                document.getElementById('iptNroSerie').value = '';
+                document.getElementById('iptNroVenta').value = '';
+                document.getElementById('selTipoPago').selectedIndex = 0;
+                document.getElementById('proveedor-input').value = '';
+                document.getElementById('descuentoGeneral').value = '0';
+                document.getElementById('selDocumentoVenta').selectedIndex = 0;
+
+                // Restablecer valores de cálculos
+                document.getElementById('subtotal').textContent = '0.00';
+                document.getElementById('subtotal2').textContent = '0.00';
+                document.getElementById('igv').textContent = '0.00';
+                document.getElementById('total_descuento').textContent = '0.00';
+                document.getElementById('total').textContent = '0.00';
+            }
+
+            // Función para generar un nuevo documento
+            /*function generarNuevoDocumento() {
+                const tipoDocumentoSeleccionado = document.getElementById('selDocumentoVenta').value; // Obtener tipo de documento seleccionado
+
+                if (tipoDocumentoSeleccionado) {
+                    // Enviar solicitud para incrementar el número de documento
+                    fetch(`http://localhost:3060/api/compra/incrementar/${tipoDocumentoSeleccionado}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.serie && data.ultimoNumeroDocumento) {
+                                // Actualiza los campos en el formulario con los nuevos valores
+                            
+                                document.getElementById('selDocumentoVenta').selectedIndex = 0;
+
+                            } else {
+                                console.error('No se pudo generar el nuevo documento');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error al generar el documento:', error);
+                        });
+                } else {
+                    console.error('Debe seleccionar un tipo de documento antes de generar');
+                }
+            }
+                     */
+        });
+
+    </script>
+
+</body>
+
+</html>

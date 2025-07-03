@@ -1,0 +1,1010 @@
+body {
+    font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 1rem;
+    font-weight: 100%;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #f4f4fc;
+    /* Fondo gris claro */
+
+}
+
+.header-section {
+    display: block;
+    padding: 0px;
+    width: 100%;
+}
+
+.title {
+    font-family: 'Merriweather', serif;
+    /* Aplica la fuente Merriweather */
+    font-weight: 100;
+    /* Ajusta el grosor de la fuente */
+    margin: 0 0 10px 0;
+    /* Espacio debajo del título */
+    text-align: left;
+    /* Alinea el texto a la izquierda */
+    font-size: 1.5rem;
+    /* Tamaño de la fuente */
+    letter-spacing: 0.05em;
+    /* Espaciado entre letras opcional */
+}
+
+.content-wrapper {
+    padding-top: 20px;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-block-end: 3px;
+
+
+
+   
+
+    /* Ajusta esto según la altura de tu navbar */
+    /* Espacio a la izquierda para el contenido */
+    /* Espacio a la derecha para el contenido */
+    background-color: #f4f4fc;
+
+}
+
+.content {
+    padding: 20px;
+    /* Agregar relleno para el contenido */
+}
+
+.custom-container {
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #fffcfc;
+    /* Fondo blanco para el contenedor */
+    border-radius: 5px;
+    /* Esquinas redondeadas */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Sombra sutil */
+    /* 70% del alto de la ventana */
+    padding: 1.25rem;
+    /* Línea azul en la parte superior */
+    max-width: 100%;
+    /* Ajusta el ancho máximo del contenedor según tus necesidades */
+    width: 100%;
+    /* Asegura que el contenedor ocupe todo el ancho disponible */
+    box-sizing: border-box;
+    /* Incluye padding y border en el ancho total */
+    overflow: hidden;
+    /* Oculta cualquier desbordamiento */
+    height: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+
+
+}
+
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-container h2 {
+    margin: 0;
+    font-weight: 500;
+    color: #0a0a0a;
+    font-size: 0.9rem
+}
+
+
+/*************************************************************************************************/
+.header-container .btn {
+    font-size: 0.8rem;
+    /* Tamaño de fuente del botón */
+    font-weight: 500;
+    /* Cambiar a negrita para mayor visibilidad */
+    padding: 0.5rem 1rem;
+    /* Relleno interno del botón */
+    width: 65px;
+    /* Ancho del botón */
+    height: 25px;
+    /* Alto del botón */
+    border-radius: 0.25rem;
+    /* Bordes redondeados */
+    display: flex;
+    align-items: center;
+    /* Alineación vertical del texto */
+    justify-content: center;
+    /* Alineación horizontal del texto */
+    background-color: #17a2b8;
+    /* Color de fondo del botón */
+    border: 1px solid #17a2b8;
+    /* Color del borde igual al color de fondo */
+
+}
+
+.header-container .btn i {
+    font-size: 0.9rem;
+    /* Tamaño del ícono */
+    margin-right: 0.2rem;
+    /* Espacio entre el ícono y el texto */
+    font-weight: 700;
+    /* Cambiar a negrita para mayor visibilidad */
+
+}
+
+/* Nueva clase .action-container */
+.action-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+/* Nueva clase .dt-buttons */
+.dt-buttons {
+    display: flex;
+    gap: 0.1rem;
+    /* Espacio entre los botones */
+}
+
+.dt-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/*************************************************************************************************/
+
+.search-container label {
+    margin-bottom: 0;
+    /* Elimina el margen inferior del label */
+    font-size: 0.9rem;
+    /* Tamaño del ícono */
+
+}
+
+.search-container input {
+    width: 200px;
+    /* Ancho del campo de búsqueda */
+    height: 30.8px;
+    /* Altura del campo de búsqueda */
+    line-height: 30.8px;
+    /* Alineación vertical del texto */
+    padding: 0.5rem;
+    /* Relleno interno del input */
+    border-radius: 3px;
+    /* Esquinas redondeadas */
+    font-size: 14px;
+    /* Tamaño del texto dentro del campo de búsqueda */
+    border: 1px solid #807f7f;
+    /* Color del borde */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Sombra del campo de búsqueda */
+    outline: none;
+    /* Elimina el contorno predeterminado del navegador */
+}
+
+.search-container input:focus {
+    border: 1px solid #17a2b8;
+    /* Color del borde cuando el campo está enfocado */
+    box-shadow: 0 1px 1px rgba(49, 190, 190, 0.4);
+    /* Sombra verde personalizada */
+    outline: none;
+    /* Asegúrate de que el contorno no aparezca */
+}
+
+
+/* Nueva clase .search-container */
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    /* Espacio entre el texto y el campo de búsqueda */
+}
+
+/* Propiedades adicionales en .search-container input */
+.search-container input {
+    width: 200px;
+    /* Ancho del campo de búsqueda */
+    height: 30.8px
+}
+
+.icon-image {
+    width: 28px;
+    /* Ajusta el ancho de la imagen */
+    height: 30.8px;
+    /* Ajusta la altura de la imagen */
+    object-fit: contain;
+    /* Asegura que la imagen no se deforme */
+}
+
+
+.divider {
+    border-top: 1px solid #6c757d;
+    margin: 1rem 0;
+    width: 100%;
+
+}
+
+/* Estilo para el ícono del ojo */
+/* Estilo para el ícono */
+#showImageIcon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    /* Espacio desde el borde derecho */
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #007bff;
+    /* Color opcional para el ícono */
+    font-size: 24px;
+    /* Tamaño opcional del ícono */
+}
+
+    /* Estilo para el ícono del ojo */
+    /* Estilo para el ícono */
+    #IconoBarras {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        /* Espacio desde el borde derecho */
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #141414;
+        /* Color opcional para el ícono */
+        font-size: 24px;
+        /* Tamaño opcional del ícono */
+    }
+
+    #showImageIcon {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        /* Espacio desde el borde derecho */
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #007bff;
+        /* Color opcional para el ícono */
+        font-size: 24px;
+        /* Tamaño opcional del ícono */
+    }
+
+    /* CSS para ajustar el tamaño de la imagen en el mensaje de SweetAlert2 */
+    .swal2-popup .swal2-image {
+        width: 20vw;
+        /* Ajusta el ancho de la imagen según sea necesario (80% del ancho de la ventana) */
+        max-width: 200px;
+        /* Máximo ancho deseado */
+        height: auto;
+        /* Mantiene la relación de aspecto de la imagen */
+    }
+
+    #diseñoTable thead th {
+        background-color: #17a2b8;
+        /* Fondo celeste para el encabezado */
+        color: #fff;
+        /* Color de texto blanco */
+        font-weight: bold;
+        /* Texto en negrita */
+        padding: 5px;
+        /* Espaciado interno */
+    }
+
+
+    .card-header {
+        background-color: white;
+        /* Set the background of the card header */
+        color: rgb(29, 29, 29);
+        /* Set the text color */
+        padding: 10px;
+        border-top: 2.5px solid #17a2b8;
+        /* Blue border at the top */
+        border-bottom: 0.1px solid gray;
+        /* Gray border at the bottom */
+        border-radius: 1px 5px 0 0;
+        /* Rounded corners only at the top */
+    }
+
+    .card-title {
+        font-size: 15px;
+        /* Adjust font size */
+        margin: 0;
+        /* Remove default margin */
+        text-align: left;
+        /* Center the title */
+        font-family: 'Arial', sans-serif;
+        /* Optional: Change the font family */
+        margin-left: 20px;
+        /* Move the text slightly to the right */
+
+
+    }
+
+
+/*************************************************************************************************/
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+
+    #diseñoTable thead th,
+    #diseñoTable tbody td {
+        font-size: 0.75rem;
+        /* Tamaño de fuente más pequeño */
+        padding: 0.5rem;
+        /* Espaciado interno reducido */
+    }
+
+    .search-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        /* Espacio entre el texto y el campo de búsqueda */
+    }
+
+    .title {
+        font-family: 'Merriweather', serif;
+        /* Aplica la fuente Merriweather */
+        font-weight: 100;
+        /* Ajusta el grosor de la fuente */
+        margin: 0 0 10px 0;
+        /* Espacio debajo del título */
+        text-align: left;
+        /* Alinea el texto a la izquierda */
+        font-size: 1.5rem;
+        /* Tamaño de la fuente */
+        letter-spacing: 0.05em;
+        /* Espaciado entre letras opcional */
+    }
+
+}
+
+/* Centra el texto en los encabezados de la tabla */
+#diseñoTable thead th {
+    text-align: center;
+    /* Centra el texto en los encabezados */
+}
+
+.table-responsive {
+    width: 100%;
+    /* Asegura que el contenedor ocupe el 100% del ancho */
+    overflow-x: auto;
+    /* Permite el desplazamiento horizontal si es necesario */
+    margin-bottom: 1rem;
+    /* Espacio debajo de la tabla */
+}
+
+
+
+.table-responsive::-webkit-scrollbar-track {
+    background: rgb(255, 255, 255);
+    /* Color del track (parte de la scrollbar que no se mueve) */
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: rgb(252, 252, 252);
+    /* Color del "thumb" (parte movible de la scrollbar) */
+    border-radius: 1px;
+    /* Opcional: borde redondeado del thumb */
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: rgba(246, 245, 245, 0.7);
+    /* Color del thumb al pasar el mouse por encima */
+}
+
+
+
+/* Estilo para la tabla */
+#diseñoTable {
+    width: 100%;
+    border-collapse: collapse;
+    /* Elimina los espacios entre celdas */
+    font-size: 0.8rem;
+    /* Tamaño de fuente más pequeño */
+    text-align: center;
+    /* Centra el texto en todas las celdas */
+    white-space: nowrap;
+    /* Evita saltos de línea en celdas */
+
+}
+
+
+
+/* Estilos para las filas pares e impares */
+#diseñoTable tbody tr.even {
+    background-color: #fdfcfc !important;
+    color: #070707;
+    /* Asegúrate de que el texto sea legible sobre el fondo de hover */
+
+}
+
+#diseñoTable tbody tr.odd {
+    background-color: #f3f1f1 !important;
+    color: #070707;
+    /* Asegúrate de que el texto sea legible sobre el fondo de hover */
+
+}
+
+#diseñoTable tbody tr.warning {
+    background-color: #eebaba !important;
+
+    color: #070707;
+    /* Asegúrate de que el texto sea legible sobre el fondo de hover */
+
+}
+
+ 
+#diseñoTable tbody tr.ss {
+    background-color: #5dd599 !important;
+
+    color: #070707;
+    /* Asegúrate de que el texto sea legible sobre el fondo de hover */
+
+}
+
+#diseñoTable tbody td {
+    border: none;
+    /* Elimina los bordes laterales y superiores */
+    padding: 1px;
+    /* Espaciado interno de las celdas */
+    border-bottom: 1px solid #c9c9c9;
+    /* Solo borde inferior de las celdas */
+    text-align: center;
+    /* Alineación horizontal al centro */
+    vertical-align: middle;
+    /* Alineación vertical al centro */
+}
+
+/* Hover effect para filas */
+#diseñoTable tbody tr:hover {
+    background-color: #e1e0e0 !important;
+    color: #060606;
+    /* Asegúrate de que el texto sea legible sobre el fondo de hover */
+}
+
+/*************************************************************************************************
+
+/* Estilos para los botones de acción */
+#diseñoTable tbody td button {
+    margin: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+/* Estilos para los íconos */
+#diseñoTable tbody td button i {
+    font-size: 1rem;
+    /* Ajusta el tamaño de los íconos */
+}
+
+/* Color específico para el ícono de editar */
+.edit-btn i {
+    color: #0d6efd;
+    /* Color amarillo para el ícono */
+}
+
+/* Color específico para el ícono de eliminar */
+.delete-btn i {
+    color: #dd1d1d;
+    /* Color blanco para el ícono */
+}
+
+
+/* Estilos para iconos de estado */
+.active {
+    color: #28a745;
+    /* Verde para activo */
+    animation: blink 1s infinite;
+    /* Efecto de parpadeo para activo */
+}
+
+.inactive {
+    color: #dc3545;
+    /* Rojo para inactivo */
+}
+
+.blocked {
+    color: #6c757d;
+    /* Gris para bloqueado */
+}
+
+.unknown {
+    color: #adb5bd;
+    /* Gris claro para desconocido */
+}
+
+/* Animación de parpadeo para activo */
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+/*************************************************************************************************/
+
+
+.pagination {
+    /* Espaciado interno horizontal de los elementos de paginación */
+    --bs-pagination-padding-x: 0.75rem;
+
+    /* Espaciado interno vertical de los elementos de paginación */
+    --bs-pagination-padding-y: 0.375rem;
+
+    /* Tamaño de fuente de los elementos de paginación */
+    --bs-pagination-font-size: 1rem;
+
+    /* Color del texto de los elementos de paginación */
+    --bs-pagination-color: #010101;
+
+    /* Fondo de los elementos de paginación */
+    --bs-pagination-bg: var(--bs-body-bg);
+
+    /* Ancho del borde de los elementos de paginación */
+    --bs-pagination-border-width: var(--bs-border-width);
+
+    /* Color del borde de los elementos de paginación */
+    --bs-pagination-border-color: #dee2e600;
+
+    /* Radio del borde de los elementos de paginación */
+    --bs-pagination-border-radius: var(--bs-border-radius);
+
+    /* Fondo cuando se pasa el ratón sobre los elementos de paginación */
+    --bs-pagination-hover-bg: var(--bs-tertiary-bg);
+
+    /* Color del borde cuando se pasa el ratón sobre los elementos de paginación */
+    --bs-pagination-hover-border-color: var(--bs-border-color);
+
+    /* Color del texto cuando los elementos de paginación están enfocados */
+    --bs-pagination-focus-color: #928e8e;
+    /* Fondo cuando los elementos de paginación están enfocados */
+    --bs-pagination-focus-bg: var(--bs-secondary-bg);
+
+    /* Sombra del borde cuando los elementos de paginación están enfocados */
+    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(104, 105, 106, 0.25);
+
+    /* Color del texto para el botón activo de paginación */
+    --bs-pagination-active-color: #000000;
+
+    /* Fondo para el botón activo de paginación */
+    --bs-pagination-active-bg: #ebedf0;
+
+    /* Color del borde para el botón activo de paginación */
+    --bs-pagination-active-border-color: #ebedf0;
+
+    /* Color del texto para el botón de paginación deshabilitado */
+    --bs-pagination-disabled-color: var(--bs-secondary-color);
+
+    /* Fondo para el botón de paginación deshabilitado */
+    --bs-pagination-disabled-bg: #e9ecef00;
+
+    /* Color del borde para el botón de paginación deshabilitado */
+    --bs-pagination-disabled-border-color: #dee2e600;
+
+    /* Alineación y disposición de los elementos de paginación */
+    display: flex;
+
+    /* Espaciado interno izquierdo del contenedor de paginación */
+    padding-left: 0;
+
+    /* Eliminación de los estilos de lista por defecto */
+    list-style: none;
+    list-style-position: initial;
+    list-style-image: initial;
+    list-style-type: none;
+
+    font-size: 14px;
+    /* Tamaño de la fuente del selector */
+    font-family: Arial, sans-serif;
+    /* Familia de fuentes para el selector */
+}
+
+.pagination .page-link:hover {
+    color: #fafafa;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    font-size: 14px;
+    /* Tamaño de la fuente del selector */
+    font-family: Arial, sans-serif;
+    /* Familia de fuentes para el selector */
+}
+
+.pagination .page-link:focus,
+.pagination .page-link:active {
+    box-shadow: none;
+    /* Elimina el efecto de sombra alrededor del botón cuando está enfocado o activo */
+    border-color: transparent;
+    /* Elimina el borde cuando está enfocado o activo */
+    background-color: #eceaea;
+    /* Fondo del botón sin cambios */
+    color: #010101;
+    /* Color del texto sin cambios */
+    font-size: 14px !important;
+    ;
+    /* Tamaño de la fuente del selector */
+    font-family: Arial, sans-serif;
+    /* Familia de fuentes para el selector */
+}
+
+
+
+/* Personalizar el tamaño de las letras del selector */
+.dataTables_length select {
+    font-size: 14px !important;
+    ;
+    /* Tamaño de la fuente del selector */
+    color: #333;
+    /* Color de la fuente del selector */
+    font-family: Arial, sans-serif;
+    /* Familia de fuentes para el selector */
+}
+
+/* Personalizar el tamaño de las letras en el texto que acompaña al selector */
+.dataTables_length label {
+    font-size: 14px !important;
+    ;
+    /* Tamaño de la fuente del selector */
+    color: #333;
+    /* Color de la fuente del texto */
+    font-family: Arial, sans-serif;
+    /* Familia de fuentes para el texto */
+}
+
+/*************************************************************************************************/
+
+/* Ocultar el filtro de búsqueda en DataTables */
+div.dataTables_wrapper div.dataTables_filter {
+    display: none;
+    /* Oculta el filtro de búsqueda */
+    margin-right: 0.1rem;
+    /* Espacio entre los elementos */
+
+}
+
+
+
+/* Ajustar el tamaño de las letras del resto de la tabla */
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    font-size: 14px;
+    /* Tamaño de la fuente de la información y la paginación */
+    color: #333;
+    /* Color de la fuente */
+    font-family: Arial, sans-serif;
+    /* Familia de fuentes */
+}
+
+
+/* Estilo del texto que acompaña al combo box */
+.dataTables_length label {
+    font-size: 14px;
+    /* Tamaño de la fuente del texto */
+    color: #333;
+    /* Color de la fuente del texto */
+    font-family: Arial, sans-serif;
+    /* Familia de fuentes del texto */
+    margin-right: 10px;
+    /* Espacio a la derecha del texto */
+}
+
+
+/*************************************************************************************************/
+
+
+
+
+
+/* Ocultar columnas en dispositivos móviles */
+/* Ocultar columnas en dispositivos móviles */
+@media (max-width: 767px) {
+    .hide-mobile {
+        display: none !important;
+
+    }
+
+    .hide-computer {
+        display: none !important;
+    }
+
+    #diseñoTable {
+        width: 100% !important;
+    }
+
+    /* Tamaño de fuente para la paginación en dispositivos móviles */
+    .pagination .page-link {
+        font-size: 13px;
+        /* Tamaño de fuente más pequeño para dispositivos móviles */
+    }
+
+    .pagination .page-link:hover {
+        font-size: 13px;
+        /* Tamaño de fuente en estado hover para dispositivos móviles */
+    }
+
+    .pagination .page-link:focus,
+    .pagination .page-link:active {
+        font-size: 13px !important;
+        /* Tamaño de fuente en estado enfocado o activo para dispositivos móviles */
+    }
+
+    .dataTables_length select {
+        font-size: 13px !important;
+        /* Tamaño de fuente para el selector en dispositivos móviles */
+    }
+
+    .dataTables_length label {
+        font-size: 13px !important;
+        /* Tamaño de fuente para el texto que acompaña al selector en dispositivos móviles */
+    }
+
+    .dataTables_wrapper .dataTables_info,
+    .dataTables_wrapper .dataTables_paginate {
+        font-size: 13px;
+        /* Tamaño de fuente para la información y la paginación en dispositivos móviles */
+    }
+
+    .search-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        /* Espacio entre el texto y el campo de búsqueda */
+    }
+
+    .search-container label {
+        margin-bottom: 0;
+        /* Elimina el margen inferior del label */
+        font-size: 0.9rem;
+        /* Tamaño del ícono */
+
+    }
+
+}
+
+
+
+/* Ocultar columnas solo en vistas de escritorio */
+@media (min-width: 769px) {
+    .hide-computer {
+        display: none !important;
+    }
+
+    #diseñoTable {
+        width: 100% !important;
+    }
+}
+
+
+.cabecera-principal {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: 0.5rem 1rem;
+    height: 50px;
+    margin-left: 5px;
+    /* Espacio a la izquierda para el contenido */
+    margin-right: -2px;
+    /* Espacio a la derecha para el contenido */
+}
+
+.nav-barra {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.nav-barra.ml-auto {
+    margin-left: auto;
+}
+
+.elemento-nav {
+    display: flex;
+    align-items: center;
+    margin-right: 1.5rem;
+    /* Espacio horizontal entre los íconos */
+}
+
+.elemento-nav:last-child {
+    margin-right: 0;
+    /* El último ítem no necesita margen derecho */
+}
+
+.enlace-nav {
+    color: #333;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.enlace-nav i {
+    font-size: 1.25rem;
+    transition: transform 0.3s ease;
+}
+
+.insignia {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background-color: #dc3545;
+    color: white;
+    font-size: 0.7rem;
+    padding: 0.1rem 0.25rem;
+    border-radius: 50%;
+}
+
+.menu-desplegable-grande {
+    max-width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.elemento-menu-desplegable {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: #333;
+    text-decoration: none;
+    border-bottom: 1px solid #e9ecef;
+    transition: background-color 0.2s ease;
+}
+
+.elemento-menu-desplegable:hover {
+    background-color: #f1f1f1;
+}
+
+.elemento-menu-desplegable .cuerpo-media h3 {
+    font-size: 1rem;
+    margin: 0;
+}
+
+.elemento-menu-desplegable .cuerpo-media p {
+    font-size: 0.875rem;
+    margin: 0;
+    color: #6c757d;
+}
+
+.elemento-menu-desplegable .media {
+    display: flex;
+    align-items: center;
+}
+
+.elemento-menu-desplegable .cuerpo-media {
+    margin-left: 1rem;
+}
+
+.boton-cerrar-sesion {
+    margin-left: 1rem;
+    color: #dc3545;
+    font-size: 1.25rem;
+}
+
+.boton-cerrar-sesion:hover {
+    color: #c82333;
+}
+
+@keyframes sacudida {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.animar-sacudida {
+    animation: sacudida 0.6s ease;
+}
+
+.contenedor-notificaciones {
+    position: relative;
+    display: inline-block;
+}
+
+.icono-notificaciones {
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0.6rem 0.6rem;
+    color: #0d0d0e;
+    background-color: #ebedef;
+    border-radius: 50%;
+}
+
+
+.enlace-nav .fa-bars {
+    cursor: pointer;
+    padding: 0.6rem 0.6rem;
+    color: #39393b;
+    border-radius: 50%;
+    margin-left: -38px;
+
+}
+
+.enlace-nav .fa-user {
+    cursor: pointer;
+    padding: 0.6rem 0.6rem;
+    color: #0d0d0e;
+    background-color: #ebedef;
+    border-radius: 50%;
+}
+
+
+.tarjeta-notificaciones {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    z-index: 1000;
+    padding: 16px;
+    margin-top: 8px;
+    box-sizing: border-box;
+}
+
+.tarjeta-notificaciones.mostrar {
+    display: block;
+}
+
+.cabecera-tarjeta {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.imagen-tarjeta {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 12px;
+}
+
+.imagen-tarjeta img {
+    width: 100%;
+    height: auto;
+}
+
+.info-tarjeta {
+    flex: 1;
+}
+
+.nombre-tarjeta {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.boton-tarjeta {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+
+.boton-tarjeta:hover {
+    background-color: #c82333;
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensaje Interactivo</title>
+    <style>
+        /* Estilos para el mensaje */
+        .mensaje-alerta {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<button onclick="mostrarMensaje()">Mostrar Mensaje</button>
+
+<div id="mensajeAlerta" class="mensaje-alerta">
+    ¡Este es un mensaje interactivo que desaparecerá pronto!
+</div>
+
+<script>
+    function mostrarMensaje() {
+        var mensaje = document.getElementById("mensajeAlerta");
+        mensaje.style.display = "block"; // Mostrar mensaje
+
+        // Ocultar mensaje después de 3 segundos
+        setTimeout(function() {
+            mensaje.style.display = "none";
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>

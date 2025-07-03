@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 10 Productos Más Vendidos</title>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        #chartContainer {
+            height: 400px;
+            width: 80%;
+            max-width: 900px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Top 10 Productos Más Vendidos</h1>
+    <div id="chartContainer"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            top10();
+
+        });
+        // Define la función top10
+        function top10() {
+
+            // Realizar una solicitud a la API para obtener los datos
+            fetch(`${apiBaseUrl}/tablero/productosTop`) // Ajusta la URL según la ruta de tu API
+                .then(response => response.json())
+                .then(data => {
+                    // Transformar los datos para el gráfico
+                    const chartData = data.map(product => ({
+                        label: product.Nombre, // Nombre del producto
+                        y: product.total_cantidad_vendida // Cantidad vendida
+                    }));
+
+                    // Configurar el gráfico con CanvasJS
+                    const chart = new CanvasJS.Chart("chartContainer", {
+                        animationEnabled: true,
+                        theme: "light2", // Opciones: "light1", "light2", "dark1", "dark2"
+                        
+                        data: [{
+                            type: "pie", // Tipo de gráfico: circular
+                            startAngle: 25,
+                            toolTipContent: "<b>{label}</b>: {y}",
+                            showInLegend: true,
+                            legendText: "{label}",
+                            indexLabelFontSize: 16,
+                            indexLabel: "{label} - {y}",
+                            dataPoints: chartData // Datos a mostrar
+                        }]
+                    });
+
+                    // Renderizar el gráfico
+                    chart.render();
+                })
+                .catch(error => {
+                    console.error('Error al cargar los datos:', error);
+                    // Mostrar un mensaje de error al usuario si es necesario
+                });
+        }
+
+    </script>
+    <script src="/config/api.js"></script>
+
+</body>
+
+</html>

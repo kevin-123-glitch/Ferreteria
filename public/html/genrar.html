@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Códigos de Barras en PDF</title>
+    <!-- Incluir las librerías JsBarcode y jsPDF desde un CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        textarea, button {
+            width: 300px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Generar Códigos de Barras en PDF</h2>
+
+    <!-- Campo de entrada para los códigos de barras (uno por línea) -->
+    <label for="codigoInput">Ingrese códigos de barras (uno por línea):</label><br>
+    <textarea id="codigoInput" rows="10" placeholder="Ejemplo: 12345678901&#10;98765432109"></textarea><br>
+    <button onclick="generarPDF()">Generar PDF</button>
+
+    <!-- Elemento oculto para convertir el SVG en PNG -->
+    <canvas id="canvas" style="display: none;"></canvas>
+
+    <script>
+        // Función para convertir SVG a imagen PNG
+        function svgToPng(svgElement, callback) {
+            var canvas = document.getElementById('canvas');
+            var ctx = canvas.getContext('2d');
+            var svgData = new XMLSerializer().serializeToString(svgElement);
+
+            var img = new Image();
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0);
+                var pngDataUrl = canvas.toDataURL("image/png");
+                callback(pngDataUrl);
+            };
+
+            var svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+            var url = URL.createObjectURL(svgBlob);
+            img.src = url;
+        }
+
+        // Función para generar el PDF con códigos de barras
+        function generarPDF() {
+            // Obtener los valores ingresados, separados por líneas
+            var codigos = document.getElementById('codigoInput').value.trim().split("\n");
+
+            // Verificar que se hayan ingresado códigos
+            if (codigos.length > 0 && codigos[0] !== "") {
+                // Crear un nuevo documento PDF
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                let yPosition = 10;  // Posición vertical inicial en el PDF
+                let svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+
+                // Iterar sobre cada código de barras ingresado
+                codigos.forEach((codigo, index) => {
+                    // Limpiar el código y asegurarse de que no esté vacío
+                    codigo = codigo.trim();
+                    if (codigo) {
+                        // Generar el código de barras en el SVG (sin mostrar en el DOM)
+                        JsBarcode(svgElement, codigo, {
+                            format: "CODE128", // Cambia esto si usas otro formato
+                            width: 2,
+                            height: 50,
+                            displayValue: true
+                        });
+
+                        // Convertir el SVG a PNG y agregarlo al PDF
+                        svgToPng(svgElement, function(pngDataUrl) {
+                            doc.addImage(pngDataUrl, 'PNG', 10, yPosition, 180, 50);
+
+                            // Avanzar en la posición vertical
+                            yPosition += 60;
+
+                            // Si el espacio se acaba en la página, crear una nueva página
+                            if (yPosition > 270) {
+                                doc.addPage();
+                                yPosition = 10;
+                            }
+
+                            // Si es el último código, descargar el PDF
+                            if (index === codigos.length - 1) {
+                                doc.save('codigos_barras.pdf');
+                            }
+                        });
+                    }
+                });
+            } else {
+                alert("Por favor, ingrese al menos un código de barras.");
+            }
+        }
+    </script>
+
+</body>
+</html>

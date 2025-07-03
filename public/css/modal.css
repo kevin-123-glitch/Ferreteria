@@ -1,0 +1,349 @@
+/* Encabezado de la Modal */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+
+}
+
+/* Título de la Modal */
+.modal-title {
+    font-size: 1rem;
+    margin: 0;
+}
+
+
+
+.close {
+    width: 1px;
+    height: 1px;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.img-close {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+
+
+/* Cuerpo y pie de la Modal */
+.modal-body {
+    padding: 1rem;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Ajustes para elementos del formulario */
+.form-control {
+    font-size: 0.8rem;
+    padding: 0.375rem 0.75rem;
+    width: 100%;
+
+}
+
+.row {
+    margin-bottom: 0.8rem;
+}
+
+form label {
+    margin-bottom: 0.1rem;
+    display: block;
+}
+
+.col-md-6,
+.col-md-12 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+
+}
+
+.btnes {
+    font-size: 1rem;
+    padding: 0.375rem 0.75rem;
+    width: 100%;
+    background-color: #007bff;
+    /* Color de fondo personalizado */
+    color: #fff;
+    /* Color del texto */
+    border: 1px solid #007bff;
+    /* Color del borde */
+}
+
+/* Estilo personalizado para los botones con la clase .btnes */
+.btnesss {
+    background-color: #007bff;
+    /* Color de fondo personalizado */
+    color: #fff;
+    /* Color del texto */
+    border: 1px solid #007bff;
+    /* Color del borde */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    padding: 10px 20px;
+    /* Espaciado interno del botón */
+    font-size: 16px;
+    /* Tamaño de la fuente */
+    font-weight: bold;
+    /* Peso de la fuente */
+    text-transform: uppercase;
+    /* Texto en mayúsculas */
+    cursor: pointer;
+    /* Cambia el cursor al pasar sobre el botón */
+    transition: background-color 0.3s ease;
+    /* Transición suave para el color de fondo */
+}
+
+
+/* Reglas para pantallas pequeñas (móviles) */
+@media (max-width: 764px) {
+
+
+    .modal-header {
+        margin-bottom: 1rem;
+        /* Añade espacio entre el título y el contenido */
+    }
+
+    .close {
+        /* Alinea el botón de cerrar a la derecha */
+        width: 1px;
+        height: 1px;
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .modal-footer {
+        margin-top: 1rem;
+        /* Añade espacio entre el contenido y el pie de la modal */
+        width: 100%;
+        justify-content: space-between;
+        /* Espacio entre botones */
+    }
+
+    .modal-footer .btbtnesn {
+        width: auto;
+        /* Permite que los botones ocupen solo el espacio necesario */
+    }
+
+    .modal-body {
+        margin-bottom: 1rem;
+        /* Añade espacio entre el cuerpo y el pie de la modal */
+    }
+
+    .form-control {
+        margin-bottom: 0.5rem;
+        /* Añade espacio entre los campos del formulario */
+    }
+
+
+    .row {
+        margin-bottom: 0.4rem;
+    }
+
+    .col-md-6,
+    .col-md-12 {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        margin-bottom: 0.5rem;
+
+    }
+
+}
+
+/* Estilo para el archivo de entrada */
+.custom-file-upload {
+    display: block;
+    /* Hacer que el campo ocupe todo el ancho */
+    position: relative;
+    /* Posicionar el botón */
+    overflow: hidden;
+    /* Ocultar parte del contenido */
+    font-size: 0.875rem;
+    /* Tamaño del texto */
+
+    border: 1px solid #dee2e6;
+    /* Borde del botón */
+
+    color: #5d5a5a;
+    /* Color del texto */
+
+}
+
+/* Estilo del botón */
+.custom-file::before {
+    content: 'Seleccionar archivo';
+    /* Texto del botón */
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    /* Espaciado del botón */
+    background-color: #007bff;
+    /* Color de fondo */
+    color: #fff;
+    /* Color del texto */
+    border: 1px solid #007bff;
+    /* Borde del botón */
+    border-radius: 0.25rem;
+    /* Bordes redondeados */
+    cursor: pointer;
+    /* Cambia el cursor al pasar sobre el botón */
+    font-size: 0.875rem;
+    /* Tamaño del texto */
+    text-align: center;
+    /* Centrar texto */
+}
+
+
+/* Floating Labels */
+.floating-label-group {
+    position: relative;
+    margin-bottom: 0.1rem;
+}
+
+.floating-label-group .form-control {
+    padding: 0.5rem 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    margin-bottom: 0.2rem;
+    /* Ajusta este valor según el espacio que desees debajo de cada grupo */
+    padding-bottom: 0.5rem;
+    /* Espacio adicional dentro del contenedor, si es necesario */
+}
+
+.floating-label-group .floating-label {
+    position: absolute;
+    top: -0.6rem;
+    /* Cambia la posición para que esté justo encima del campo */
+    left: 0.75rem;
+    font-size: 0.85rem;
+    color: transparent;
+    /* Hace el label transparente inicialmente */
+    pointer-events: none;
+    transition: 0.2s ease all;
+}
+
+.floating-label-group .form-control:focus~.floating-label,
+.floating-label-group .form-control:not(:placeholder-shown)~.floating-label {
+    color: #555353;
+    /* Hace visible el label cuando se escribe o se enfoca */
+    font-size: 0.75rem;
+    background-color: #ffffff;
+
+}
+
+.floating-label-group .form-control:focus::placeholder,
+.floating-label-group .form-control:not(:placeholder-shown)::placeholder {
+    color: transparent;
+}
+
+/*------------------------------------------------------------------------*/
+
+/* Floating Labels para <select> */
+.floating-label-select-group {
+    position: relative;
+    margin-bottom: 0.1rem;
+
+}
+/* Floating Labels para <select> */
+.floating-label-select-group {
+    position: relative;
+    margin-bottom: 0.1rem;
+
+}
+
+.floating-label-select-group .form-control {
+    padding: 0.5rem 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    -webkit-appearance: none;
+    /* Elimina el estilo predeterminado de los navegadores para los selects */
+    -moz-appearance: none;
+    appearance: none;
+    margin-bottom: 0.2rem;
+    /* Ajusta este valor según el espacio que desees debajo de cada grupo */
+    padding-bottom: 0.5rem;
+    /* Espacio adicional dentro del contenedor, si es necesario */
+    
+}
+
+
+.floating-label-select-group::after {
+    content: '';
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    width: 12px; /* Ajusta el ancho según necesites */
+    height: 12px; /* Ajusta la altura según necesites */
+    background-image: url('../images/abajo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    
+}
+
+/* Etiqueta flotante específica para select */
+.floating-label-select-group .floating-label {
+    position: absolute;
+    top: -0.6rem;
+    /* Ajusta la posición inicial */
+    left:  0.75rem;
+    /* Ajusta la posición horizontal */
+    font-size: 0.75rem;
+    /* Tamaño del texto de la etiqueta */
+    color: transparent;
+    /* Hace la etiqueta transparente inicialmente */
+    pointer-events: none;
+    /* Evita que la etiqueta interfiera con la interacción del campo */
+    transition: 0.2s ease all;
+    /* Transición suave para el movimiento de la etiqueta */
+}
+
+/* Estado cuando el select tiene un valor seleccionado */
+.floating-label-select-group .form-control:not(:placeholder-shown)~.floating-label {
+    color: #0f0f0f;
+    /* Color de la etiqueta cuando está activa */
+    font-size: 0.75rem;
+    /* Tamaño del texto reducido */
+    top: -0.9em;
+    /* Mueve la etiqueta hacia arriba */
+    background-color: #ffffff;
+    /* Fondo blanco para la etiqueta */
+}
+
+/* Oculta la etiqueta flotante si la opción por defecto está seleccionada */
+.floating-label-select-group .form-control option.default-option:checked~.floating-label {
+    display: none;
+}
+
+/* Oculta el texto del placeholder para <select> */
+.floating-label-select-group .form-control option:first-child {
+    color: transparent;
+    /* Oculta el texto de la opción predeterminada */
+}
+
+/* Estilo de la opción predeterminada */
+.floating-label-select-group .form-control option.default-option {
+    color: #6c757d;
+    /* Color de la opción predeterminada */
+    font-style: italic;
+    /* Estilo de texto para indicar que es una opción predeterminada */
+}
